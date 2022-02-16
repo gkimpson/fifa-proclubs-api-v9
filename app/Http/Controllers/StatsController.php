@@ -8,29 +8,6 @@ use App\Services\ProClubsApiService;
 
 class StatsController extends Controller
 {
-    public $apiUrl = 'https://proclubs.ea.com/api/fifa/';
-    public $referer = 'https://www.ea.com/';
-    public $user;
-    const PLATFORMS = [
-        'xbox-series-xs',
-        'xboxone',
-        'ps5',
-        'ps4',
-        'pc'
-    ];
-
-    const MYCLUB_DEFAULTS = [
-        'platform' => 'ps5',
-        'clubId' => '310718',
-        'clubName' => 'Banterbury FC',
-        'matchType' => 'gameType9' // (gameType13 = cup, gameType9 = league)
-    ];
-
-    const MATCH_TYPES = [
-        'gameType9' => 'league',
-        'gameType13' => 'cup'
-    ];
-
     public function index()
     {
 
@@ -39,6 +16,11 @@ class StatsController extends Controller
     public function clubsInfo(Request $request)
     {
         return ProClubsApiService::clubsInfo($request->input('platform'), $request->input('clubIds'));
+    }
+
+    public function careerStats(Request $request)
+    {
+        
     }
 
     private function doExternalApiCall($endpoint = null, $params = [])
