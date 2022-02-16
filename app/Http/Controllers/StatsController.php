@@ -18,9 +18,9 @@ class StatsController extends Controller
         return ProClubsApiService::clubsInfo($request->input('platform'), $request->input('clubIds'));
     }
 
-    public function careerStats(Request $request)
+    public function matchStats(Request $request)
     {
-        
+        return ProClubsApiService::matchStats($request->input('platform'), $request->input('clubIds'), $request->input('matchType'));
     }
 
     private function doExternalApiCall($endpoint = null, $params = [])

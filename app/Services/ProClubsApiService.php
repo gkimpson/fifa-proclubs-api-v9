@@ -80,7 +80,7 @@ class ProClubsApiService
             $response = curl_exec($curl);
             curl_close($curl);
             return $response;
-            
+
         } catch (\Exception $e) {
             // do some logging...
             return false;
@@ -110,11 +110,20 @@ class ProClubsApiService
         return self::doExternalApiCall($endpoint, $params);
     }
 
-    public static function getMatches(int $projectId = NULL)
+    static public function matchStats($platform, $clubId, $matchType, $cliParams = [])
     {
-        $data = ['some data'];
+        $endpoint = 'clubs/matches?';
+        $params = [
+            'matchType' => ($matchType) ? $matchType : self::MYCLUB_DEFAULTS['matchType'],
+            'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform'],
+            'clubIds' => ($clubId) ? $clubId : self::MYCLUB_DEFAULTS['clubId']
+        ];
 
-        return $data;
+        if ($cliParams) {
+            $params = $cliParams;
+        }
+ 
+        return self::doExternalApiCall($endpoint, $params);
     }
 
 }
