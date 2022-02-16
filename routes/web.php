@@ -21,4 +21,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+/* My routes */
+Route::get('/clubsinfo', 'App\Http\Controllers\StatsController@clubsInfo');
+
 require __DIR__.'/auth.php';
