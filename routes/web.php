@@ -17,9 +17,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/dashboard', 'App\Http\Controllers\MyDashboardController@index')->middleware(['auth'])->name('dashboard'); 
+    // Route::get('/club', 'App\Http\Controllers\MyDashboardController@club')->middleware(['auth'])->name('club');
+    // Route::get('/squad', 'App\Http\Controllers\MyDashboardController@squad')->middleware(['auth'])->name('squad');
+    // Route::get('/league', 'App\Http\Controllers\MyDashboardController@league')->middleware(['auth'])->name('league');
+    // Route::get('/cup', 'App\Http\Controllers\MyDashboardController@cup')->middleware(['auth'])->name('cup');
+    // Route::get('/league/form', 'App\Http\Controllers\MyDashboardController@form')->middleware(['auth'])->name('leagueform');
+    // Route::get('/league/rank', 'App\Http\Controllers\MyDashboardController@rank')->middleware(['auth'])->name('leaguerank');
+    // Route::get('/cup/form', 'App\Http\Controllers\MyDashboardController@form')->middleware(['auth'])->name('cupform');
+    // Route::get('/cup/rank', 'App\Http\Controllers\MyDashboardController@rank')->middleware(['auth'])->name('cuprank');
+    // Route::get('/media', 'App\Http\Controllers\MyDashboardController@media')->middleware(['auth'])->name('media');  
+});
 
 /* My routes */
 Route::get('/clubsinfo', 'App\Http\Controllers\StatsController@clubsInfo');
