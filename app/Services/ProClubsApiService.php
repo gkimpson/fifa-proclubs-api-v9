@@ -25,11 +25,6 @@ class ProClubsApiService
         'matchType' => 'gameType9' // (gameType13 = cup, gameType9 = league)
     ];
 
-    const MATCH_TYPES = [
-        'gameType9' => 'league',
-        'gameType13' => 'cup'
-    ];
-
     public function __construct()
     {
         
