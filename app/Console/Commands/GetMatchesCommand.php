@@ -55,10 +55,7 @@ class GetMatchesCommand extends Command
                 $count = count($results);
                 $this->info("{$count} matches found");
                 $inserted = Result::insertUniqueMatches($results, $property->platform);
-                $this->info("{$inserted} unique results into the database");          
-
-                $total = 0;
-                $this->info("Total matches found : {$total}");    
+                $this->info("{$inserted} unique results into the database"); 
             }
             
             return 0;
