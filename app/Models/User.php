@@ -34,11 +34,20 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
-     * @var array<string, string>
+     * @var array
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'properties' => 'object'
     ];
+
+    protected $appends = ['emblem_id'];
+
+    public function getEmblemId()
+    {
+        // $props = json_decode($this->attributes['properties']);
+        // return $props->emblemId;
+    }
 }

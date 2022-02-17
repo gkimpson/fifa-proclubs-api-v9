@@ -23,6 +23,41 @@ class StatsController extends Controller
         return ProClubsApiService::matchStats($request->input('platform'), $request->input('clubIds'), $request->input('matchType'));
     }
 
+    public function careerStats(Request $request)
+    {
+
+    }
+
+    public function memberStats(Request $request)
+    {
+        
+    }    
+
+    public function seasonStats(Request $request)
+    {
+        
+    }       
+
+    public function search(Request $request)
+    {
+        
+    }    
+   
+    public function settings(Request $request)
+    {
+        
+    }      
+
+    public function seasonalLeaderboard(Request $request)
+    {
+        
+    }  
+
+    public function clubLeaderboard(Request $request)
+    {
+        
+    }
+
     private function doExternalApiCall($endpoint = null, $params = [])
     {
         $url = $this->apiUrl . $endpoint . http_build_query($params);
