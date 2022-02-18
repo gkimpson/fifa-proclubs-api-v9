@@ -44,16 +44,12 @@ class Result extends Model
                     ->paginate(SELF::PAGINATION);
     }    
 
-    public static function insertUniqueMatches($matches, $platform = null, $showOutput = false)
+    public static function insertUniqueMatches($matches, $platform = null, $showDebugging = true)
     {
         $inserted = 0;
-        $failedToInsert = 0;
-        $start_time = microtime(TRUE);
 
         foreach ($matches as $matchType => $match) {
-            // dd($match, __LINE__);
             // check if existing match already exists in the db, if so don't re-insert this
-            // dd($match->matchId);
             if (Result::where('match_id', '=', $match['matchId'])->doesntExist()) {
                 $carbonDate = Carbon::now();
                 $carbonDate->timestamp($match['timestamp']);
@@ -75,23 +71,25 @@ class Result extends Model
                     'platform' => $platform
                 ];
                 
-                // DB::enableQueryLog();
-                // if ($showOutput) {
-                //     dump($data);
-                // }
+                if ($showDebugging) {
+                    DB::enableQueryLog();
+                    dump($data);
+                }
                 
                 try {
                     Result::create($data);
                     $inserted++;
 
-                    if ($showOutput) {
-                        dump('inserted matchId: '. $match['matchId']);
-                    }
+                    dump('inserted matchId: '. $match['matchId']);
                     
                  } catch (\Exception $e) {
                     dd($e);
                  }
-                // dd(DB::getQueryLog());           
+
+                 if ($showDebugging) {
+                    dump(DB::getQueryLog());
+                 }
+
             }
         }
         return $inserted;
