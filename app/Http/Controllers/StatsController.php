@@ -45,17 +45,17 @@ class StatsController extends Controller
    
     public function settings(Request $request)
     {
-        
+        return ProClubsApiService::settings($request);
     }      
 
     public function seasonalLeaderboard(Request $request)
     {
-        
+        return ProClubsApiService::leaderboard($request->input('platform'), 'seasonRankLeaderboard');
     }  
 
     public function clubLeaderboard(Request $request)
     {
-        
+        return ProClubsApiService::leaderboard($request->input('platform'), 'clubRankLeaderboard');
     }
 
     private function doExternalApiCall($endpoint = null, $params = [])
