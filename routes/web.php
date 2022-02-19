@@ -23,6 +23,8 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/dashboard', 'App\Http\Controllers\MyDashboardController@index')->middleware(['auth'])->name('dashboard'); 
+    Route::get('/debug', 'App\Http\Controllers\MyDashboardController@debug')->middleware(['auth'])->name('debug'); 
+
     // Route::get('/club', 'App\Http\Controllers\MyDashboardController@club')->middleware(['auth'])->name('club');
     // Route::get('/squad', 'App\Http\Controllers\MyDashboardController@squad')->middleware(['auth'])->name('squad');
     // Route::get('/league', 'App\Http\Controllers\MyDashboardController@league')->middleware(['auth'])->name('league');
@@ -45,5 +47,6 @@ Route::get('/settings', 'App\Http\Controllers\StatsController@settings');
 Route::get('/seasonleaderboard', 'App\Http\Controllers\StatsController@seasonalLeaderboard');
 Route::get('/clubleaderboard', 'App\Http\Controllers\StatsController@clubLeaderboard');
 Route::get('/command', 'App\Http\Controllers\StatsController@runCommand');
+
 
 require __DIR__.'/auth.php';

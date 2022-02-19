@@ -44,7 +44,7 @@ class Result extends Model
                     ->paginate(SELF::PAGINATION);
     }    
 
-    public static function insertUniqueMatches($matches, $platform = null, $showDebugging = true)
+    public static function insertUniqueMatches($matches, $platform = null, $showDebugging = false)
     {
         $inserted = 0;
 
@@ -83,7 +83,7 @@ class Result extends Model
                     dump('inserted matchId: '. $match['matchId']);
                     
                  } catch (\Exception $e) {
-                    dd($e);
+                    dump($e->getMessage());
                  }
 
                  if ($showDebugging) {

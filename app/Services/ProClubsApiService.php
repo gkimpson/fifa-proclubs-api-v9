@@ -105,7 +105,7 @@ class ProClubsApiService
         return self::doExternalApiCall($endpoint, $params);
     }
 
-    static public function matchStats($platform, $clubId, $matchType, $cliParams = [])
+    static public function matchStats($platform, $clubId, $matchType)
     {
         $endpoint = 'clubs/matches?';
         $params = [
@@ -114,11 +114,74 @@ class ProClubsApiService
             'clubIds' => ($clubId) ? $clubId : self::MYCLUB_DEFAULTS['clubId']
         ];
 
-        if ($cliParams) {
-            $params = $cliParams;
-        }
- 
         return self::doExternalApiCall($endpoint, $params);
+    }
+
+    static public function careerStats($platform, $clubId)
+    {           
+        $endpoint = 'members/career/stats?';
+        $params = [
+            'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform'],
+            'clubId' => ($clubId) ? $clubId : self::MYCLUB_DEFAULTS['clubId']
+        ];     
+           
+        return self::doExternalApiCall($endpoint, $params);
+    }
+
+    static public function memberstats($platform, $clubId)
+    {
+        $endpoint = 'members/stats?';
+        $params = [
+            'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform'],
+            'clubId' => ($clubId) ? $clubId : self::MYCLUB_DEFAULTS['clubId']
+        ];     
+           
+        return self::doExternalApiCall($endpoint, $params);        
+    }
+
+    static public function seasonStats($platform, $clubId)
+    {
+        $endpoint = 'clubs/seasonalStats?';
+        $params = [
+            'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform'],
+            'clubIds' => ($clubId) ? $clubId : self::MYCLUB_DEFAULTS['clubId']
+        ];    
+           
+        return self::doExternalApiCall($endpoint, $params);        
+    }    
+
+    static public function search($platform, $clubName)
+    {
+        $endpoint = 'clubs/search?';
+        $params = [
+            'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform'],
+            'clubName' => ($clubName) ? $clubName : self::MYCLUB_DEFAULTS['clubName']
+        ];  
+
+        $items = self::doExternalApiCall($endpoint, $params);
+        dd($params, $items);
+    
+        $validItems = [];
+        foreach($items as $clubId => &$item) {
+            if (array_key_exists('seasons', $item)) {
+                if (array_key_exists('clubInfo', $item) && isset($item['clubInfo']['teamId'])) {
+                    $teamId = $item['clubInfo']['teamId'];
+                    $validItems[] = array(
+                        'item' => $item,
+                        'customCrestUrl' => "https://fifa21.content.easports.com/fifa/fltOnlineAssets/05772199-716f-417d-9fe0-988fa9899c4d/2021/fifaweb/crests/256x256/l{$teamId}.png",
+                    );
+                } else {
+                    $validItems[] = array(
+                        'item' => $item,
+                        'customCrestUrl' => "https://media.contentapi.ea.com/content/dam/ea/fifa/fifa-21/pro-clubs/common/pro-clubs/crest-default.png",
+                    );                    
+                }
+
+            } else {
+                // team has yet to play a season so won't be a valid option
+            }
+        }
+        dd($validItems[0]['customCrestUrl'], $validItems[1]['customCrestUrl'], $validItems[2]['customCrestUrl'], $validItems[3]['customCrestUrl'], $validItems[4]['customCrestUrl']);        
     }
 
 }

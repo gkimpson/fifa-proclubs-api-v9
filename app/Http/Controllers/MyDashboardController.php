@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Services\ProClubsApiService;
 use Illuminate\Support\Facades\Log;
 use App\Models\Result;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Arr;
+use App\Services\FutCardGeneratorService;
 
 class MyDashboardController extends Controller
 {
@@ -23,5 +27,14 @@ class MyDashboardController extends Controller
 
         dump($data);
         return view('dashboard', $data);
+    }
+
+
+
+    public function debug()
+    {
+        $futCard = new FutCardGeneratorService();
+        $futCard->generate();
+        dd($futCard);
     }
 }

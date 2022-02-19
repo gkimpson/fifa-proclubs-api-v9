@@ -42,6 +42,7 @@ class GetMatchesCommand extends Command
     public function handle()
     {
         try {
+            ray()->measure();
             $this->info('Running...' . $this->description);
             $properties = User::pluck('properties')->unique();
 
@@ -57,6 +58,7 @@ class GetMatchesCommand extends Command
                 $inserted = Result::insertUniqueMatches($results, $property->platform);
                 $this->info("{$inserted} unique results into the database"); 
             }
+            ray()->measure();
             
             return 0;
         } catch (\Exception $e) {
@@ -64,17 +66,8 @@ class GetMatchesCommand extends Command
         }
     }
 
-    /**
-     * e.g matchtypes - 9 is league, 13 is cup
-     */
     private function handleResultByMatchType($matchType, $properties)
     {
-        $params = [
-            'matchType' => $matchType,
-            'platform' => $properties->platform,
-            'clubIds' => $properties->clubId
-        ];
-
-        return ProClubsApiService::matchStats($params['platform'], $params['clubIds'], $params['matchType']);
+        return ProClubsApiService::matchStats($properties->platform, $properties->clubId, $matchType);
     }
 }

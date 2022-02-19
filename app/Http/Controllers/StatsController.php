@@ -20,27 +20,27 @@ class StatsController extends Controller
 
     public function matchStats(Request $request)
     {
-        return ProClubsApiService::matchStats($request->input('platform'), $request->input('clubIds'), $request->input('matchType'));
+        return ProClubsApiService::matchStats($request->input('platform'), $request->input('clubId'), $request->input('matchType'));
     }
 
     public function careerStats(Request $request)
     {
-
+        return ProClubsApiService::careerStats($request->input('platform'), $request->input('clubId'));    
     }
 
     public function memberStats(Request $request)
     {
-        
+        return ProClubsApiService::careerStats($request->input('platform'), $request->input('clubId'));
     }    
 
     public function seasonStats(Request $request)
     {
-        
+        return ProClubsApiService::seasonStats($request->input('platform'), $request->input('clubId'));
     }       
 
     public function search(Request $request)
     {
-        
+        return ProClubsApiService::search($request->input('platform'), $request->input('clubName'));
     }    
    
     public function settings(Request $request)
