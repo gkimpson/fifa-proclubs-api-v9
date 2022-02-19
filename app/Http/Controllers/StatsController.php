@@ -36,7 +36,7 @@ class StatsController extends Controller
     public function seasonStats(Request $request)
     {
         return ProClubsApiService::seasonStats($request->input('platform'), $request->input('clubId'));
-    }       
+    }
 
     public function search(Request $request)
     {
@@ -48,15 +48,12 @@ class StatsController extends Controller
         return ProClubsApiService::settings($request);
     }      
 
-    public function seasonalLeaderboard(Request $request)
+    public function leaderboard(Request $request)
     {
-        return ProClubsApiService::leaderboard($request->input('platform'), 'seasonRankLeaderboard');
+        return ProClubsApiService::leaderboard($request->input('platform'), $request->input('type'));
     }  
 
-    public function clubLeaderboard(Request $request)
-    {
-        return ProClubsApiService::leaderboard($request->input('platform'), 'clubRankLeaderboard');
-    }
+
 
     private function doExternalApiCall($endpoint = null, $params = [])
     {

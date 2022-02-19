@@ -171,7 +171,6 @@ class ProClubsApiService
     static public function search($platform, $clubName)
     {
         $endpoint = 'clubs/search?';
-        $clubName = 'banterbury';
         $params = [
             'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform'],
             'clubName' => ($clubName) ? $clubName : self::MYCLUB_DEFAULTS['clubName']
@@ -203,16 +202,22 @@ class ProClubsApiService
         return($results);
     }
 
-    static function leaderboard($platform, $leaderboard)
+    static public function leaderboard($platform, $type)
     {
-        $endpoint = 'clubRankLeaderboard?'; // seasonRankLeaderboard, clubRankLeaderboard
-        if (!in_array($leaderboard, self::LEADERBOARDS)) {
-            abort(400, "{$leaderboard} is an invalid leaderboard");
+        $endpoint = match ($type) {
+            'club' => 'clubRankLeaderboard?',
+            'season' => 'seasonRankLeaderboard?',
+            default => 'clubRankLeaderboard?'
+        };        
+
+        if (!$endpoint) {
+            abort(400, 'Invalid leaderboard type');
         }
         
         $params = [
             'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform']
         ];
+
         return self::doExternalApiCall($endpoint, $params);         
     }
 
