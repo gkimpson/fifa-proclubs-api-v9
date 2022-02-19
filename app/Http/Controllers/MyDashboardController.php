@@ -25,7 +25,6 @@ class MyDashboardController extends Controller
             ],
         ];
 
-        dump($data);
         return view('dashboard', $data);
     }
 

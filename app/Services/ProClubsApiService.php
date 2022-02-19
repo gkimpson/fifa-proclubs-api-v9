@@ -41,13 +41,23 @@ class ProClubsApiService
     }
 
     /** not currently working... */
-    static private function doExternalApiCallViaGuzzle($endpoint = null, $params = null)
+    static private function doExternalApiCallGuzzle($endpoint = null, $params = null)
     {
-        $url = self::API_URL . $endpoint . http_build_query($params);
-        return Http::withHeaders(['Referer' => self::REFERER])->get($url)->json();     
+        // $url = self::API_URL . $endpoint . http_build_query($params);
+        // return Http::withHeaders(['Referer' => self::REFERER])->get($url)->json();
+
+        // $response = Http::withHeaders([
+        //     'accept-language' => 'en-US,en;q=0.9,pt-BR;q=0.8,pt;q=0.7',
+        //     'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36',
+        //     'http'
+        // ])->withOptions([
+        //     'debug' => true
+        // ])->get( self::API_URL . $endpoint, [
+        //     'name' => 'Zabs'
+        // ]);
     }    
 
-    static public function doExternalApiCall($endpoint = null, $params = [])
+    static public function doExternalApiCall($endpoint = null, $params = [], $jsonDecoded = true, $isCLI = false)
     {
         try {
             $url = self::API_URL . $endpoint . http_build_query($params);
@@ -76,17 +86,19 @@ class ProClubsApiService
             }
             else
             {
-                echo "Operation completed without any errors\n";
+                if ($isCLI) {
+                    echo "Operation completed without any errors\n";
+                }
             }          
 
             if(curl_errno($curl))
             {
                 echo 'Curl error: ' . curl_error($curl);
-            }          
-                
+            }   
+                       
             $response = curl_exec($curl);
             curl_close($curl);
-            return $response;
+            return ($jsonDecoded) ? json_decode($response) : $response;
 
         } catch (\Exception $e) {
             // do some logging...
@@ -129,7 +141,7 @@ class ProClubsApiService
         return self::doExternalApiCall($endpoint, $params);
     }
 
-    static public function careerStats($platform, $clubId)
+    static public function careerStats($platform, $clubId, $raw = false)
     {           
         $endpoint = 'members/career/stats?';
         $params = [

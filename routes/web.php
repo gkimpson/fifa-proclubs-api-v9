@@ -51,4 +51,8 @@ Route::get('/leaderboard/club', 'App\Http\Controllers\StatsController@leaderboar
 Route::get('/command', 'App\Http\Controllers\StatsController@runCommand');
 
 
+Route::prefix('ps5-xbsxs')->group(function () {
+    Route::get('/members/{platform}/{clubId}', 'App\Http\Controllers\StatsController@memberStats');
+});
+
 require __DIR__.'/auth.php';
