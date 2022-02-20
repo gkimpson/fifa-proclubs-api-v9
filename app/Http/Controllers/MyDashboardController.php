@@ -18,7 +18,7 @@ class MyDashboardController extends Controller
         $user = auth()->user();
         $data = [
             'results' => Result::getResults($user->properties),
-            'myClubId' => $user->properties->clubId, 
+            'myClubId' => $user->properties->clubId,
             'streaks' => [
                 'current' => Result::getCurrentStreak($user->properties->clubId),
                 'max' => Result::getMaxStreaksByClubId($user->properties->clubId)

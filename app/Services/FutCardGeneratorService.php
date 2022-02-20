@@ -20,25 +20,24 @@ class FutCardGeneratorService
         'bottom' => 325          
     ];
 
-    //todo - get all the correct mapped positions (member->proPos on member/stats json data)
     CONST MAPPED_POSITIONS = [
-        'GK' => '0',
-        'LB' => '7',
-        'CB' => '5',
-        'RB' => '3',
-        'LWB' => '8',
-        'RWB' => '2',
-        'CDM' => '10',
-        'LM' => '16',
-        'CM' => '14',
-        'RM' => '12',
-        'CAM' => '18',
-        'ST' => '25',
-        'LF' => '22',
-        'CF' => '21',
-        'RF' => '20',
-        'LW' => '27',
-        'RW' => '23'
+        0 => 'GK',
+        7 => 'LB',
+        5 => 'CB',
+        3 => 'RB',
+        8 => 'LWB',
+        2 => 'RWB',
+        10 => 'CDM',
+        16 => 'LM',
+        14 => 'CM',
+        12 => 'RM',
+        18 => 'CAM',
+        25 => 'ST',
+        22 => 'LF',
+        21 => 'CF',
+        20 => 'RF',
+        27 => 'LW',
+        23 => 'RW'
     ];
 
     public static function playerCard($playerName)

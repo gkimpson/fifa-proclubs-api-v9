@@ -36,7 +36,7 @@ class StatsController extends Controller
     {
         $apiData = ProClubsApiService::memberStats($request->input('platform'), $request->input('clubId'));
         $data = [
-            'members' => $apiData->members,
+            'members' => ProClubsApiService::formatMembersData($apiData->members),
             'positions' => $apiData->positionCount
         ];
 

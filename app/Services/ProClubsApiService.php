@@ -159,8 +159,25 @@ class ProClubsApiService
             'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform'],
             'clubId' => ($clubId) ? $clubId : self::MYCLUB_DEFAULTS['clubId']
         ];     
-           
-        return self::doExternalApiCall($endpoint, $params);        
+
+        return self::doExternalApiCall($endpoint, $params);
+    }
+
+    static public function formatMembersData($membersData)
+    {
+        // find a more laravel way to do this...
+        $collection = collect($membersData);
+        $membersData = $collection->map(function ($item, $key) {
+            $item->proPosition = FutCardGeneratorService::MAPPED_POSITIONS[$item->proPos];
+            return $item;
+        });      
+
+        $membersData = $membersData->sortBy([
+            ['proOverall', 'desc'],
+            ['name', 'asc']
+        ]);
+
+        return $membersData;
     }
 
     static public function seasonStats($platform, $clubId)
