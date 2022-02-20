@@ -70,4 +70,9 @@ class StatsController extends Controller
         ];
         return view('stats.player', $data);
     }
+
+    public function player()
+    {
+        
+    }
 }

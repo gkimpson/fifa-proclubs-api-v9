@@ -34,6 +34,17 @@ Route::group(['middleware' => 'auth'], function() {
     // Route::get('/cup/form', 'App\Http\Controllers\MyDashboardController@form')->middleware(['auth'])->name('cupform');
     // Route::get('/cup/rank', 'App\Http\Controllers\MyDashboardController@rank')->middleware(['auth'])->name('cuprank');
     // Route::get('/media', 'App\Http\Controllers\MyDashboardController@media')->middleware(['auth'])->name('media');  
+
+    /* My routes */
+    Route::get('/clubsinfo', 'App\Http\Controllers\StatsController@clubsInfo');
+    Route::get('/careerstats', 'App\Http\Controllers\StatsController@careerStats');
+    Route::get('/memberstats', 'App\Http\Controllers\StatsController@memberStats');
+    Route::get('/memberstats/player/{playerId}', 'App\Http\Controllers\StatsController@playerCard');
+    Route::get('/seasonstats', 'App\Http\Controllers\StatsController@seasonStats');
+    Route::get('/matchstats', 'App\Http\Controllers\StatsController@matchStats');
+    Route::get('/search', 'App\Http\Controllers\StatsController@search');
+    Route::get('/settings', 'App\Http\Controllers\StatsController@settings');
+    Route::get('/club/{platform}/{clubId}/{player}', 'App\Http\Controllers\StatsController@player');
 });
 
 /* My routes */

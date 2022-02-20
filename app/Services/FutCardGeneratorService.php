@@ -61,6 +61,7 @@ class FutCardGeneratorService
     {
         $img = Image::make(SELF::FUT_CARD_PATH);
         $playerStats = [
+            'OVR' => 90,
             'PAC' => 96,
             'SHO' => 81,
             'PAS' => 89,
@@ -68,20 +69,21 @@ class FutCardGeneratorService
             'DEF' => 55,
             'PHY' => 70,
             'POS' => 'CAM',
-            'NAME' => 'fasterAdam',
+            'NAME' => 'GAVIN KIMPSON',
         ];
 
         $attrs = [
-            'size' => 32,
+            'size' => 28,
             'color' => '#ffffff',
             'align' => 'center',
             'valign' => 'top',
             'angle' => 0
         ];
 
-        $img = $this->generateImageBlock($img, $playerStats['NAME'], 125, 70, $attrs);
+        $img = $this->generateImageBlock($img, $playerStats['NAME'], 125, 225, $attrs);
         $attrs['size'] = 26;
         $img = $this->generateImageBlock($img, $playerStats['POS'], 55, 130, $attrs);
+        $img = $this->generateImageBlock($img, $playerStats['OVR'], 55, 95, $attrs);
 
         $attrs['size'] = 24;
         $img = $this->generateImageBlock($img, $playerStats['PAC'], self::X_AXIS['left'], self::Y_AXIS['top'], $attrs);     
@@ -93,12 +95,12 @@ class FutCardGeneratorService
     
         
         header('Content-Type: image/jpeg');
-        $playerImg = Image::make('images/faces/me.jpg')->resize(100, 100);
+        $playerImg = Image::make('images/faces/adams.jpg')->resize(150, 150)->greyscale();
         // dump($playerImg);
         // echo $playerImg->encode('jpeg');
         // return $playerImg->response();
 
-        $img->insert($playerImg, 'center', 30, -40);
+        $img->insert($playerImg, 'center', 45, -61);
         echo $img->encode('jpeg');
         return $img->response();        
     }
