@@ -28,6 +28,11 @@ class Result extends Model
         'properties' => 'json'
     ];
 
+    public function getMatchDateAttribute($value) 
+    {
+        return Carbon::parse($value);
+    }
+
     public static function getResults($properties)
     {
         if (!$properties->clubId) {

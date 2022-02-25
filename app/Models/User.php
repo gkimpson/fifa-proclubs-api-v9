@@ -47,7 +47,7 @@ class User extends Authenticatable
 
     public function getEmblemId()
     {
-        // $props = json_decode($this->attributes['properties']);
-        // return $props->emblemId;
+        $props = json_decode($this->attributes['properties']);
+        return $props->emblemId;
     }
 }
