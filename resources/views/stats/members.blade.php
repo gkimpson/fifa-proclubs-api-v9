@@ -10,15 +10,6 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        
-                        {{-- <div class="max-w-xs mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800">
-                            <img class="object-cover w-full h-56" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt="avatar">
-                            
-                            <div class="py-5 text-center">
-                                <a href="#" class="block text-2xl font-bold text-gray-800 dark:text-white">John Doe</a>
-                                <span class="text-sm text-gray-700 dark:text-gray-200">Software Engineer</span>
-                            </div>
-                        </div> --}}
 
                         <div class="flex flex-wrap grid gap-4 grid-cols-2">
                             @foreach ($members as $memberKey => $member)
@@ -55,7 +46,7 @@
                                             <h1 class="text-lg font-bold text-gray-300 dark:text-gray-200 md:text-xl">{{ $member->proOverall }}</h1>
                                             <h2 class="text-sm font-bold text-gray-300 dark:text-gray-200 relative top-1">{{ $member->proPosition }}</h2>
                                             <img class="hidden md:inline" src="https://media.contentapi.ea.com/content/dam/ea/fifa/fifa-21/ratings-collective/f20assets/country-flags/{{ $member->proNationality }}.png" alt="Nationality">
-                                            <a href="/memberstats/player/{{ $member->name }}">
+                                            <a href="/memberstats/{{ $platform }}/{{ $member->name }}">
                                             <button class="px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-200 transform bg-gray-800 rounded dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none focus:bg-gray-700 dark:focus:bg-gray-600">FULL STATS</button></a>
                                         </div>
                                     </div>
