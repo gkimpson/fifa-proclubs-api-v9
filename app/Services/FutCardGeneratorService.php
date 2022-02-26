@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use App\Models\Result;
 
 class FutCardGeneratorService 
 {
@@ -40,9 +41,20 @@ class FutCardGeneratorService
         23 => 'RW'
     ];
 
-    public static function playerCard($playerName)
+    public static function playerCard($platform, $clubId, $playerName)
     {
-        // find player by name 'zabius-uk' for current team
+        // dd($platform, $clubId, $playerName);
+        // find player by name 'zabius-uk' for current team & platform
+        $data = [];
+        $matchCup = collect(json_decode(ProClubsApiService::matchStats($platform, $clubId, Result::MATCH_TYPE_LEAGUE)));
+
+        $players = [];
+        $players1 = collect($matchCup[0]->players);
+        $players = $players1->values();
+        // $players2 = collect($matchCup[1]->players);
+  
+
+        dd($players1);
     }
 
     private function generateImageBlock($image, $name, $xAxis, $yAxis, $attributes)

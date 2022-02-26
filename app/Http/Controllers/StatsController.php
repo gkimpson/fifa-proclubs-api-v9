@@ -34,7 +34,7 @@ class StatsController extends Controller
 
     public function memberStats(Request $request)
     {
-        $apiData = ProClubsApiService::memberStats($request->input('platform'), $request->input('clubId'));
+        $apiData = json_decode(ProClubsApiService::memberStats($request->input('platform'), $request->input('clubId')));
         $data = [
             'members' => ProClubsApiService::formatMembersData($apiData->members),
             'positions' => $apiData->positionCount
@@ -63,11 +63,12 @@ class StatsController extends Controller
         return ProClubsApiService::leaderboard($request->input('platform'), $request->input('type'));
     }
 
-    public function playerCard($playerName = null)
+    public function playerCard($platform = null, $clubId = null, $playerName = null)
     {
         $data = [
-            'card' => FutCardGeneratorService::playerCard($playerName)
+            'card' => FutCardGeneratorService::playerCard($platform, $clubId, $playerName)
         ];
+        dd($data);
         return view('stats.player', $data);
     }
 

@@ -356,4 +356,49 @@ class Result extends Model
         return $teams['away'] ?? 'https://media.contentapi.ea.com/content/dam/ea/fifa/fifa-21/pro-clubs/common/pro-clubs/crest-default.png';     
     }    
 
+    /**
+     * explodes media ids into array
+     */
+    public function getMediaIdsAttribute()
+    {
+        $mediaIds = $this->attributes['media'];
+        $youtubeIds = [];
+        if (!empty($csv)) {
+            $youtubeIds = Str::of($mediaIds)->explode(',');
+        }
+
+        if (is_object($youtubeIds)) {
+            $youtubeIds = array_filter($youtubeIds->toArray());
+        }
+        
+        return $youtubeIds;
+    }
+
+    /**
+     * get media for club
+     * @param string $platform
+     * @param int $clubId
+     */
+    static public function getMedia($platform, $clubId)
+    {
+        $data = [];
+        $data['pagination'] = Result::select('id', 'home_team_id', 'away_team_id', 'properties', 'media')
+                ->where(function($query) use ($clubId) {
+                $query->where('home_team_id', '=', $clubId)
+                ->orWhere('away_team_id', '=', $clubId);
+         })
+         ->whereNotNull('media')
+         ->orderBy('id', 'desc')
+         ->paginate(5);
+
+         $formatted = [];
+         foreach($data['pagination'] as $row) {
+             $formatted[] = explode(',', $row->media);
+         }
+
+         $data['formatted'] = $formatted;
+
+         return $data;
+    }    
+
 }

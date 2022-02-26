@@ -57,7 +57,7 @@ class ProClubsApiService
         // ]);
     }    
 
-    static public function doExternalApiCall($endpoint = null, $params = [], $jsonDecoded = true, $isCLI = false)
+    static public function doExternalApiCall($endpoint = null, $params = [], $jsonDecoded = false, $isCLI = false)
     {
         try {
             $url = self::API_URL . $endpoint . http_build_query($params);
