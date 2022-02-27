@@ -23,7 +23,7 @@ class Result extends Model
 
     // protected $fillable = ['match_id', 'home_team_id', 'away_team_id', 'home_team_goals', 'away_team_goals', 'outcome', 'match_date', 'properties', 'platform', 'media'];
     protected $guarded = [];
-    protected $appends = ['my_club_home_or_away', 'team_ids', 'home_team_crest_url', 'away_team_crest_url'];
+    protected $appends = ['media_ids', 'my_club_home_or_away', 'team_ids', 'home_team_crest_url', 'away_team_crest_url'];
     protected $casts = [
         'properties' => 'json'
     ];
@@ -361,17 +361,27 @@ class Result extends Model
      */
     public function getMediaIdsAttribute()
     {
-        $mediaIds = $this->attributes['media'];
         $youtubeIds = [];
-        if (!empty($csv)) {
-            $youtubeIds = Str::of($mediaIds)->explode(',');
+        if (isset($this->attributes['media'])) {
+            $mediaIds = $this->attributes['media'];
+
+            if (!empty($mediaIds)) {
+                $youtubeIds = Str::of($mediaIds)->explode(',');
+                // dump($youtubeIds);
+            }
+            
+            if (is_object($youtubeIds)) {
+                $youtubeIds = array_filter($youtubeIds->toArray());
+
+            }            
         }
 
-        if (is_object($youtubeIds)) {
-            $youtubeIds = array_filter($youtubeIds->toArray());
-        }
-        
         return $youtubeIds;
+    }
+
+    public function getAbcAttribute()
+    {
+        return [ 56, 66];
     }
 
     /**

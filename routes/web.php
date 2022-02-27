@@ -45,6 +45,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/search', 'App\Http\Controllers\StatsController@search');
     Route::get('/settings', 'App\Http\Controllers\StatsController@settings');
     Route::get('/club/{platform}/{clubId}/{player}', 'App\Http\Controllers\StatsController@player');
+    Route::post('highlights', 'App\Http\Controllers\StatsController@highlights');
 });
 
 /* My routes */

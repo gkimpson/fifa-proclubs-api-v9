@@ -25,7 +25,7 @@ class MyDashboardController extends Controller
             ],
         ];
 
-        // dd($data['results'][0]);
+        // dump($data['results'][0]->media_ids);
         return view('dashboard', $data);
     }
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Services\FutCardGeneratorService;
 use Illuminate\Http\Request;
 use App\Services\ProClubsApiService;
+use App\Models\Result;
+use Illuminate\Support\Str;
 
 
 class StatsController extends Controller
@@ -79,4 +81,18 @@ class StatsController extends Controller
     {
         
     }
+
+    /**
+     * save youtube highlights for match
+     */
+    public function highlights(Request $request)
+    {
+        $matchId = $request->formData['matchId'];
+        $url = $request->formData['youtubeURL'];
+        $youtubeId = Str::remove('https://www.youtube.com/watch?v=', $url);
+        $result = Result::where('match_id', $matchId)->first();
+        $result->media .= $youtubeId .',';
+        $result->save();
+        // dd($result, $result->save());
+    }    
 }
