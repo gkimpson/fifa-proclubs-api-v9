@@ -164,7 +164,7 @@
 
 
 
-                            <!-- START DESKTOP ROWS -->
+                        <!-- START DESKTOP ROWS -->
                             <tr data-matchId="{{ $result->match_id }}">
                                 <td class="px-2 py-2 md:px-5 md:py-5 border-b border-gray-200 bg-white text-sm w-2/5 
                                 @if($result->outcome === 'homewin' && $result->home_team_id === $myClubId) bg-green-200 
@@ -295,7 +295,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            <!-- END DESKTOP ROWS -->
+                        <!-- END DESKTOP ROWS -->
 
 
 

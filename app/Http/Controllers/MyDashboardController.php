@@ -16,15 +16,17 @@ class MyDashboardController extends Controller
     public function index()
     {
         $user = auth()->user();
+        $streaks = Result::getResultsForStreaks($user->properties->clubId);
         $data = [
             'results' => Result::getResults($user->properties),
             'myClubId' => $user->properties->clubId,
             'streaks' => [
-                'current' => Result::getCurrentStreak($user->properties->clubId),
-                'max' => Result::getMaxStreaksByClubId($user->properties->clubId)
+                'current' => $streaks['current'],
+                'max' => $streaks['max'],
             ],
         ];
 
+        // dd($data['streaks']);
         // dump($data['results'][0]->media_ids);
         return view('dashboard', $data);
     }

@@ -216,15 +216,14 @@ class Result extends Model
         return $outcome;
     }    
 
-    static public function getCurrentStreak($clubId, $limit = 30)
+    /**
+     * @clubId clubId integer
+     * @limit limit integer defaults to 30
+     * @results
+     */    
+    static public function getCurrentStreak($clubId, $limit = 30, $results = [])
     {
         $streaks = [ 'W' => 0, 'L' => 0, 'D' => 0 ];
-
-        // get all results for this clubId order by most recent first
-        $results = Result::select(['id', 'home_team_id', 'away_team_id', 'outcome', 'properties'])
-                    ->where('home_team_id', '=', $clubId)
-                    ->orWhere('away_team_id', '=', $clubId)
-                    ->orderBy('match_date', 'desc')->limit($limit)->get()->toArray();
 
         $outcomes = [];
         foreach($results as $key => $result) {
@@ -256,19 +255,15 @@ class Result extends Model
     /**
      * get the maximum streaks for a club (W, D and L)
      * @clubId clubId integer
-     * @limit limit integer defaults to 20
+     * @limit limit integer defaults to 30
+     * @results
      * @return $maxStreaks array
      */
-    static public function getMaxStreaksByClubId($clubId, $limit = 10000)
+    static public function getMaxStreaksByClubId($clubId, $limit = 30, $results = [])
     {
         if (!$clubId) {
             throw new \Exception("ClubId required", 1);
         }
-
-        $results = Result::select(['id', 'home_team_id', 'away_team_id', 'outcome'])
-                    ->where('home_team_id', '=', $clubId)
-                    ->orWhere('away_team_id', '=', $clubId)
-                    ->orderBy('match_date', 'desc')->limit($limit)->get()->toArray();
 
         $outcomes = [];
 
@@ -306,6 +301,19 @@ class Result extends Model
         ]);
 
         return $maxStreaks;
+    }
+
+    static public function getResultsForStreaks($clubId, $limit = 100)
+    {
+        $results = Result::select(['id', 'home_team_id', 'away_team_id', 'outcome'])
+                    ->where('home_team_id', '=', $clubId)
+                    ->orWhere('away_team_id', '=', $clubId)
+                    ->orderBy('match_date', 'desc')->limit($limit)->get()->toArray();
+
+        return [
+            'max' => self::getMaxStreaksByClubId($clubId, $limit, $results),
+            'current' => self::getCurrentStreak($clubId, $limit, $results),
+        ];
     }
 
     public function getCrestUrl($teamId)
