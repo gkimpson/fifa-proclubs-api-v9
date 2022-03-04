@@ -19,14 +19,13 @@ class MyDashboardController extends Controller
         $streaks = Result::getResultsForStreaks($user->properties->clubId);
         $data = [
             'results' => Result::getResults($user->properties),
-            'myClubId' => $user->properties->clubId,
+            'myClubId' => (int)$user->properties->clubId,
             'streaks' => [
                 'current' => $streaks['current'],
                 'max' => $streaks['max'],
             ],
         ];
 
-        // dd($data['streaks']);
         // dump($data['results'][0]->media_ids);
         return view('dashboard', $data);
     }

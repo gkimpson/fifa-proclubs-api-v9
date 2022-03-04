@@ -167,7 +167,7 @@
                         <!-- START DESKTOP ROWS -->
                             <tr data-matchId="{{ $result->match_id }}">
                                 <td class="px-2 py-2 md:px-5 md:py-5 border-b border-gray-200 bg-white text-sm w-2/5 
-                                @if($result->outcome === 'homewin' && $result->home_team_id === $myClubId) bg-green-200 
+                                @if($result->outcome === 'homewin' ) bg-green-200 
                                 @elseif($result->outcome === 'awaywin' && $result->home_team_id === $myClubId) bg-red-200 
                                 @endif">
                                     <div class="flex items-center">
