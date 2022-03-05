@@ -305,11 +305,13 @@
                                     <div class="flex flex-row">
                                         <div class="basis-2/12">
                                         <!-- home team top player -->
-                                        @foreach ($result->top_rated_players[$result->home_team_id] as $k => $player)
-                                        <div>
-                                            {{ $player->name }} | {{ $player->rating }}
-                                        </div>
-                                        @endforeach
+                                        @isset($result->top_rated_players[$result->home_team_id])
+                                            @foreach ($result->top_rated_players[$result->home_team_id] as $k => $player)
+                                            <div>
+                                                {{ $player->name }} | {{ $player->rating }}
+                                            </div>
+                                            @endforeach
+                                        @endisset
                                         
                                         </div>
                                         <div class="basis-8/12">
@@ -358,11 +360,13 @@
                                         </div>
                                         <div class="basis-2/12">
                                         <!-- away team top player -->
-                                        @foreach ($result->top_rated_players[$result->away_team_id] as $k => $player)
-                                        <div>
-                                            {{ $player->name }} | {{ $player->rating }}
-                                        </div>
-                                        @endforeach
+                                        @isset($result->top_rated_players[$result->away_team_id])
+                                            @foreach ($result->top_rated_players[$result->away_team_id] as $k => $player)
+                                            <div>
+                                                {{ $player->name }} | {{ $player->rating }}
+                                            </div>
+                                            @endforeach
+                                        @endif
                                         </div>
                                       </div>
                                 </td>

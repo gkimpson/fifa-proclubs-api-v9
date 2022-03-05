@@ -421,7 +421,7 @@ class Result extends Model
      */
     public function getTopRatedPlayersAttribute()
     {
-        $clubPlayers = collect($this->properties['players']);   
+        $clubPlayers = collect($this->properties['players']);
         return $clubPlayers->map(function ($players, $clubId) {
             $players = collect($players);
             $highestRating = [];
