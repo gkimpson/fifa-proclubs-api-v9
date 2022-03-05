@@ -167,7 +167,7 @@
                         <!-- START DESKTOP ROWS -->
                             <tr data-matchId="{{ $result->match_id }}">
                                 <td class="px-2 py-2 md:px-5 md:py-5 border-b border-gray-200 bg-white text-sm w-2/5 
-                                @if($result->outcome === 'homewin' ) bg-green-200 
+                                @if($result->outcome === 'homewin' && $result->home_team_id === $myClubId) bg-green-200 
                                 @elseif($result->outcome === 'awaywin' && $result->home_team_id === $myClubId) bg-red-200 
                                 @endif">
                                     <div class="flex items-center">
@@ -302,46 +302,69 @@
 
                             <tr style="display: none;" x-show="selected == {{ $loop->iteration }}">
                                 <td class="text-center text-xs" colspan="5">
-                                    <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['shots'] }}</div>
-                                        <div class="text-center text-xs md:text-sm">Shots on Target</div>
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['shots'] }}</div>
-                                    </div>
-                                    <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['saves'] }}</div>
-                                        <div class="text-center text-xs md:text-sm">Saves (Human GK)</div>
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['saves'] }}</div>
-                                    </div>
-                                    <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['redcards'] }}</div>
-                                        <div class="text-center text-xs md:text-sm">Red Cards</div>
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['redcards'] }}</div>
-                                    </div>
-                                    <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['tacklesmade'] }}</div>
-                                        <div class="text-center text-xs md:text-sm">Tackles Made</div>
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['tacklesmade'] }}</div>
-                                    </div>
-                                    <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['tackleattempts'] }}</div>
-                                        <div class="text-center text-xs md:text-sm">Tackles Attempts</div>
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['tackleattempts'] }}</div>
-                                    </div>
-                                    <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['assists'] }}</div>
-                                        <div class="text-center text-xs md:text-sm">Assists</div>
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['assists'] }}</div>
-                                    </div>                                                                                                                                                                                   
-                                    <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['passesmade'] }}</div>
-                                        <div class="text-center text-xs md:text-sm">Passes Made</div>
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['passesmade'] }}</div>
-                                    </div>
-                                    <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['passattempts'] }}</div>
-                                        <div class="text-center text-xs md:text-sm">Pass Attempts</div>
-                                        <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['passattempts'] }}</div>
-                                    </div>                                      
+                                    <div class="flex flex-row">
+                                        <div class="basis-2/12">
+                                        <!-- home team top player -->
+                                        @foreach ($result->top_rated_players[$result->home_team_id] as $k => $player)
+                                        <div>
+                                            {{ $player->name }} | {{ $player->rating }}
+                                        </div>
+                                        @endforeach
+                                        
+                                        </div>
+                                        <div class="basis-8/12">
+
+                                            <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['shots'] }}</div>
+                                                <div class="text-center text-xs md:text-sm">Shots on Target</div>
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['shots'] }}</div>
+                                            </div>
+                                            <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['saves'] }}</div>
+                                                <div class="text-center text-xs md:text-sm">Saves (Human GK)</div>
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['saves'] }}</div>
+                                            </div>
+                                            <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['redcards'] }}</div>
+                                                <div class="text-center text-xs md:text-sm">Red Cards</div>
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['redcards'] }}</div>
+                                            </div>
+                                            <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['tacklesmade'] }}</div>
+                                                <div class="text-center text-xs md:text-sm">Tackles Made</div>
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['tacklesmade'] }}</div>
+                                            </div>
+                                            <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['tackleattempts'] }}</div>
+                                                <div class="text-center text-xs md:text-sm">Tackles Attempts</div>
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['tackleattempts'] }}</div>
+                                            </div>
+                                            <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['assists'] }}</div>
+                                                <div class="text-center text-xs md:text-sm">Assists</div>
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['assists'] }}</div>
+                                            </div>                                                                                                                                                                                   
+                                            <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['passesmade'] }}</div>
+                                                <div class="text-center text-xs md:text-sm">Passes Made</div>
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['passesmade'] }}</div>
+                                            </div>
+                                            <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['passattempts'] }}</div>
+                                                <div class="text-center text-xs md:text-sm">Pass Attempts</div>
+                                                <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['passattempts'] }}</div>
+                                            </div>                                                                                  
+                                        
+                                        </div>
+                                        <div class="basis-2/12">
+                                        <!-- away team top player -->
+                                        @foreach ($result->top_rated_players[$result->away_team_id] as $k => $player)
+                                        <div>
+                                            {{ $player->name }} | {{ $player->rating }}
+                                        </div>
+                                        @endforeach
+                                        </div>
+                                      </div>
                                 </td>
                             </tr>
                         @endforeach

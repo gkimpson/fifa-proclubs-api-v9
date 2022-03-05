@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
+
 
 class Result extends Model
 {
@@ -23,7 +25,7 @@ class Result extends Model
 
     // protected $fillable = ['match_id', 'home_team_id', 'away_team_id', 'home_team_goals', 'away_team_goals', 'outcome', 'match_date', 'properties', 'platform', 'media'];
     protected $guarded = [];
-    protected $appends = ['media_ids', 'my_club_home_or_away', 'team_ids', 'home_team_crest_url', 'away_team_crest_url'];
+    protected $appends = ['media_ids', 'my_club_home_or_away', 'team_ids', 'home_team_crest_url', 'away_team_crest_url', 'top_rated_players'];
     protected $casts = [
         'properties' => 'json'
     ];
@@ -234,7 +236,7 @@ class Result extends Model
             } elseif ($result['away_team_id'] == $clubId && $result['outcome'] == 'homewin' || $result['home_team_id'] == $clubId && $result['outcome'] =='awaywin') {
                 $outcomes[] = 'L';
             } else {
-                throw new \Exception('Unable to process match outcome should be a W, D or L', 1);
+                throw new \Exception('Unable to process match outcome should be players$players W, D or L', 1);
             }
         }   
 
@@ -253,7 +255,7 @@ class Result extends Model
     }
 
     /**
-     * get the maximum streaks for a club (W, D and L)
+     * get the maximum streaks for players$players club (W, D and L)
      * @clubId clubId integer
      * @limit limit integer defaults to 30
      * @results
@@ -275,7 +277,7 @@ class Result extends Model
             } elseif ($result['away_team_id'] == $clubId && $result['outcome'] == 'homewin' || $result['home_team_id'] == $clubId && $result['outcome'] =='awaywin') {
                 $outcomes[] = 'L';
             } else {
-                throw new \Exception('Unable to process match outcome should be a W, D or L', 1);
+                throw new \Exception('Unable to process match outcome should be players$players W, D or L', 1);
             }
         }                    
                     
@@ -305,7 +307,7 @@ class Result extends Model
 
     static public function getResultsForStreaks($clubId, $limit = 100)
     {
-        $results = Result::select(['id', 'home_team_id', 'away_team_id', 'outcome'])
+        $results = Result::select(['id', 'home_team_id', 'away_team_id', 'outcome', 'properties'])
                     ->where('home_team_id', '=', $clubId)
                     ->orWhere('away_team_id', '=', $clubId)
                     ->orderBy('match_date', 'desc')->limit($limit)->get()->toArray();
@@ -387,11 +389,6 @@ class Result extends Model
         return $youtubeIds;
     }
 
-    public function getAbcAttribute()
-    {
-        return [ 56, 66];
-    }
-
     /**
      * get media for club
      * @param string $platform
@@ -417,6 +414,27 @@ class Result extends Model
          $data['formatted'] = $formatted;
 
          return $data;
-    }    
+    }
+
+    /**
+     * get players order by match rating for each club
+     */
+    public function getTopRatedPlayersAttribute()
+    {
+        $clubPlayers = collect($this->properties['players']);   
+        return $clubPlayers->map(function ($players, $clubId) {
+            $players = collect($players);
+            $highestRating = [];
+            $players = $players->sortByDesc('properties.rating');
+            return $players->map(function ($player) use ($clubId, &$highestRating) {
+                return $highestRating[$clubId][] = (object)[
+                    'name' => $player['playername'],
+                    'rating' => (float)$player['properties']['rating'],
+                    'mom' => (bool)$player['properties']['mom'],
+                    'properties' => $player['properties']
+                ];
+            });
+        });
+    }
 
 }

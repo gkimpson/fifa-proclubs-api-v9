@@ -26,7 +26,7 @@ class MyDashboardController extends Controller
             ],
         ];
 
-        // dump($data['results'][0]->media_ids);
+        // dd($data['results'][0]->top_rated_players[310718]);
         return view('dashboard', $data);
     }
 
