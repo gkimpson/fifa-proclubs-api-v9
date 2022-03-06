@@ -12,9 +12,6 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-        
-        <!-- use the proper tailwind way for later.... -->
-        <script src="https://cdn.tailwindcss.com/3.0.23"></script>
         <link rel="stylesheet" href="{{ asset('css/lity.min.css') }}">
 
         <!-- Scripts -->
