@@ -315,7 +315,6 @@
                                                 @for ($i = 0; $i < $player->properties['assists']; $i++)
                                                     <i class="fa-solid fa-handshake-angle"></i>
                                                 @endfor
-                                                
                                             </div>
                                             @endforeach
                                         @endisset
@@ -374,7 +373,14 @@
                                         @isset($result->top_rated_players[$result->away_team_id])
                                             @foreach ($result->top_rated_players[$result->away_team_id] as $k => $player)
                                             <div>
-                                                {{ $player->name }} | {{ $player->rating }}
+                                                {{ $player->name }} | {{ $player->rating }} 
+                                                @for ($i = 0; $i < $player->properties['goals']; $i++)
+                                                    <i class="fa-solid fa-futbol"></i>
+                                                @endfor
+
+                                                @for ($i = 0; $i < $player->properties['assists']; $i++)
+                                                    <i class="fa-solid fa-handshake-angle"></i>
+                                                @endfor
                                             </div>
                                             @endforeach
                                         @endif
