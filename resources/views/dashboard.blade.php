@@ -306,7 +306,7 @@
                                         <!-- home team top player -->
                                         @isset($result->top_rated_players[$result->home_team_id])
                                             @foreach ($result->top_rated_players[$result->home_team_id] as $k => $player)
-                                            <div>
+                                            <div class="py-3">
                                                 {{ $player->name }} | {{ $player->rating }} 
                                                 @for ($i = 0; $i < $player->properties['goals']; $i++)
                                                     <i class="fa-solid fa-futbol"></i>
@@ -372,7 +372,7 @@
                                         <!-- away team top player -->
                                         @isset($result->top_rated_players[$result->away_team_id])
                                             @foreach ($result->top_rated_players[$result->away_team_id] as $k => $player)
-                                            <div>
+                                            <div class="py-3">
                                                 {{ $player->name }} | {{ $player->rating }} 
                                                 @for ($i = 0; $i < $player->properties['goals']; $i++)
                                                     <i class="fa-solid fa-futbol"></i>
