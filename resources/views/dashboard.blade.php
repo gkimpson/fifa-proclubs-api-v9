@@ -316,6 +316,7 @@
                                         </div>
                                         <div class="basis-8/12">
 
+                                            @isset($result->properties['aggregate'])
                                             <div class="grid grid-cols-3 gap-4 w-100 md:w-1/2 mx-auto border-b py-2">
                                                 <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['shots'] }}</div>
                                                 <div class="text-center text-xs md:text-sm">Shots on Target</div>
@@ -355,7 +356,10 @@
                                                 <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->home_team_id]['passattempts'] }}</div>
                                                 <div class="text-center text-xs md:text-sm">Pass Attempts</div>
                                                 <div class="text-center text-xs md:text-sm">{{ $result->properties['aggregate'][$result->away_team_id]['passattempts'] }}</div>
-                                            </div>                                                                                  
+                                            </div>
+                                            @else
+                                            <div>No stats recorded for this match</div>                                                                               
+                                            @endif
                                         
                                         </div>
                                         <div class="basis-2/12">
