@@ -26,7 +26,7 @@ class MyDashboardController extends Controller
             ],
         ];
 
-        // dd($data['results'][0]->top_rated_players[310718]);
+        // dd($data['results'][0]->top_rated_players[310718][0]->properties);
         return view('dashboard', $data);
     }
 

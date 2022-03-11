@@ -8,7 +8,6 @@
     <div
     class="container mx-auto px-4 sm:px-8">
 
-
         <div class="py-8">            
             <div>
                 <h2 class="text-2xl font-semibold leading-tight">Matches</h2>
@@ -308,7 +307,15 @@
                                         @isset($result->top_rated_players[$result->home_team_id])
                                             @foreach ($result->top_rated_players[$result->home_team_id] as $k => $player)
                                             <div>
-                                                {{ $player->name }} | {{ $player->rating }}
+                                                {{ $player->name }} | {{ $player->rating }} 
+                                                @for ($i = 0; $i < $player->properties['goals']; $i++)
+                                                    <i class="fa-solid fa-futbol"></i>
+                                                @endfor
+
+                                                @for ($i = 0; $i < $player->properties['assists']; $i++)
+                                                    <i class="fa-solid fa-handshake-angle"></i>
+                                                @endfor
+                                                
                                             </div>
                                             @endforeach
                                         @endisset
