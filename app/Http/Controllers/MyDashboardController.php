@@ -33,9 +33,12 @@ class MyDashboardController extends Controller
 
     public function debug()
     {
-        $futCard = new FutCardGeneratorService();
-        $futCard->generate();
-        dd($futCard);
+        $user = auth()->user();
+        // $futCard = new FutCardGeneratorService();
+        // $futCard->generate();
+        // dd($futCard);
+
+        Result::getPlayersRecentForm($user->properties);
     }
 
     public function cup()

@@ -437,4 +437,35 @@ class Result extends Model
         });
     }
 
+    /**
+     * 
+     */
+    public static function getPlayersRecentForm($properties, $matchesLimit = 100)
+    {
+        if (!$properties->clubId) {
+            abort(404, 'Missing clubId');
+        }
+
+        if (!$properties->platform) {
+            abort(404, 'Missing platform');
+        }        
+        
+        $results = Result::where('home_team_id', '=', $properties->clubId)
+                    ->orWhere('away_team_id', '=', $properties->clubId)
+                    ->orderBy('match_date', 'desc')
+                    ->limit($matchesLimit)
+                    ->get();
+
+        $collection = $results->map(function ($result, $key) use ($properties) {
+            $club = collect($result->properties['players'][$properties->clubId]);
+
+            $playerName = ($club->has($key)) ? $club[$key]['playername'] : null;
+            // dump($playerName);
+            
+            return $playerName;
+        });
+        
+        dd($collection->filter());
+    }
+
 }
