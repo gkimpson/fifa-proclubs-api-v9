@@ -17,11 +17,11 @@
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.9.0/cdn.min.js" integrity="sha512-91GIHlafcLQRUuQqlBCEF/qOecSTcBkSsaPWP3jgstLpwZ8orjgDlPgJshIq+x9t8wFcrGEjUKSMRN3K5ibq6Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
 
         <script src="{{ asset('js/jquery-2.2.4.min.js') }}" defer></script>
         <script src="{{ asset('js/lity.min.js') }}" defer></script>
 
+        @stack('head-scripts')        
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">

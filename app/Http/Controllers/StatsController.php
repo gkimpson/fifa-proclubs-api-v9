@@ -71,7 +71,8 @@ class StatsController extends Controller
     public function playerCard($platform = null, $clubId = null, $playerName = null)
     {
         $data = [
-            'card' => FutCardGeneratorService::playerCard($platform, $clubId, $playerName)
+            // 'card' => FutCardGeneratorService::playerCard($platform, $clubId, $playerName)
+            'chart' => 'chart'
         ];
         
         return view('stats.player', $data);

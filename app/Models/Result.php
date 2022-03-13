@@ -458,14 +458,40 @@ class Result extends Model
 
         $collection = $results->map(function ($result, $key) use ($properties) {
             $club = collect($result->properties['players'][$properties->clubId]);
-
             $playerName = ($club->has($key)) ? $club[$key]['playername'] : null;
-            // dump($playerName);
-            
             return $playerName;
         });
         
         dd($collection->filter());
     }
 
+    /** consider refactoring into new file */
+    public static function getGoalStats($properties, $matchesLimit = 10)
+    {
+        $labels = [];
+        $data = [];
+
+        $results = Result::where('home_team_id', '=', $properties->clubId)
+                    ->orWhere('away_team_id', '=', $properties->clubId)
+                    ->orderBy('match_date', 'desc')
+                    ->limit($matchesLimit)
+                    ->get();
+
+        $labels = $results->map(function ($result, $key) use ($properties) {
+            return "Game ". ($key + 1);
+        });
+
+        $data = $results->map(function ($result) use ($properties) {
+            $clubCollection = collect($result->properties['players'][$properties->clubId]);
+            return $clubCollection->sum(function ($player) {
+                return $player['goals'];
+             });
+        });
+
+        $chartData = [
+            'labels' => $labels,
+            'data' => $data
+        ];
+        return $chartData;
+    }
 }
