@@ -305,10 +305,10 @@
                                         <div class="basis-1/4">
                                             @isset($result->top_rated_players[$result->home_team_id])
                                                 @foreach ($result->top_rated_players[$result->home_team_id] as $k => $player)
-                                                <div class="flex w-full items-center flex justify-center items-center py-1 px-4">
-                                                    <div class="w-full h-20 flex flex-col justify-between bg-white rounded-lg border border-gray-400 mb-6 py-1 px-4">
+                                                <div class="flex items-center flex justify-center items-center py-1 px-1">
+                                                    <div class="flex flex-col justify-between bg-white rounded-lg border border-gray-400 py-1 px-1">
                                                         <div>
-                                                            <h4 tabindex="0" class="focus:outline-none text-gray-800 font-bold mb-3">{{ $player->name }}</h4>
+                                                            <h4 tabindex="0" class="focus:outline-none text-gray-800 font-bold">{{ $player->name }}</h4>
                                                             <p tabindex="0" class="focus:outline-none text-gray-800 text-sm"></p>
                                                         </div>
 
@@ -390,10 +390,10 @@
                                         <div class="basis-1/4">
                                             @isset($result->top_rated_players[$result->away_team_id])
                                                 @foreach ($result->top_rated_players[$result->away_team_id] as $k => $player)
-                                                <div class="flex w-full items-center flex justify-center items-center py-1 px-4">
-                                                    <div class="w-full h-20 flex flex-col justify-between bg-white rounded-lg border border-gray-400 mb-6 py-1 px-4">
+                                                <div class="flex items-center flex justify-center items-center py-1 px-1">
+                                                    <div class="flex flex-col justify-between bg-white rounded-lg border border-gray-400 py-1 px-1">
                                                         <div>
-                                                            <h4 tabindex="0" class="focus:outline-none text-gray-800 font-bold mb-3">{{ $player->name }}</h4>
+                                                            <h4 tabindex="0" class="focus:outline-none text-gray-800 font-bold">{{ $player->name }}</h4>
                                                             <p tabindex="0" class="focus:outline-none text-gray-800 text-sm"></p>
                                                         </div>
 
