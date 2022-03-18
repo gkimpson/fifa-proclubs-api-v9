@@ -44,6 +44,7 @@ class GetMatchesCommand extends Command
         try {
             ray()->measure();
             $showOutput = ($this->argument('output') === 'y') ? true : false;
+            $showDebugging = false;
             $this->info('Running...' . $this->description);
             $properties = User::pluck('properties')->unique();
 
@@ -58,7 +59,7 @@ class GetMatchesCommand extends Command
                     $this->info("{$count} matches found");    
                 }
                 
-                $inserted = Result::insertUniqueMatches($results, $property->platform, $showOutput);
+                $inserted = Result::insertUniqueMatches($results, $property->platform, $showDebugging, $showOutput);
                 if ($showOutput) {
                     $this->info("{$inserted} unique results into the database"); 
                 }
