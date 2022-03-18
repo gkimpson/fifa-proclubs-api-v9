@@ -10,12 +10,15 @@ use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Arr;
 use App\Services\FutCardGeneratorService;
+use Artisan;
 
 class MyDashboardController extends Controller
 {
     public function index()
     {
         $user = auth()->user();
+        Artisan::call('proclubsapi:matches n'); // param removes any output to the browser call
+
         $streaks = Result::getResultsForStreaks($user->properties->clubId);
         $data = [
             'results' => Result::getResults($user->properties),

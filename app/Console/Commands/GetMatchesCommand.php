@@ -15,7 +15,7 @@ class GetMatchesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'proclubsapi:matches';
+    protected $signature = 'proclubsapi:matches {output=y}';
 
     /**
      * The console command description.
@@ -43,6 +43,7 @@ class GetMatchesCommand extends Command
     {
         try {
             ray()->measure();
+            $showOutput = ($this->argument('output') === 'y') ? true : false;
             $this->info('Running...' . $this->description);
             $properties = User::pluck('properties')->unique();
 
@@ -52,11 +53,15 @@ class GetMatchesCommand extends Command
                 $results_1 = Result::formatData($this->handleResultByMatchType(Result::MATCH_TYPE_LEAGUE, $property), $property);
                 $results_2 = Result::formatData($this->handleResultByMatchType(Result::MATCH_TYPE_CUP, $property), $property);
                 $results = array_merge($results_1->toArray(), $results_2->toArray());
-
                 $count = count($results);
-                $this->info("{$count} matches found");
-                $inserted = Result::insertUniqueMatches($results, $property->platform);
-                $this->info("{$inserted} unique results into the database"); 
+                if ($showOutput) {
+                    $this->info("{$count} matches found");    
+                }
+                
+                $inserted = Result::insertUniqueMatches($results, $property->platform, $showOutput);
+                if ($showOutput) {
+                    $this->info("{$inserted} unique results into the database"); 
+                }
             }
             ray()->measure();
             
