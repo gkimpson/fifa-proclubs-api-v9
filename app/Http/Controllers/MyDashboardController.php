@@ -19,10 +19,9 @@ class MyDashboardController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $clubId = $user->properties->clubId;
 
         // check for result within the last 15 minutes if none found lets make a call to EA
-        if (Result::hasRecentMatchCheck($clubId) == false) {
+        if (Result::hasRecentMatchCheck($user->properties->clubId) == false) {
             Artisan::call('proclubsapi:matches n'); // 'n' (no) param removes any output to the browser otherwise it outputs the dumps
         }
 
