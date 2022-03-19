@@ -497,4 +497,17 @@ class Result extends Model
         ];
         return $chartData;
     }
+
+    public static function hasRecentMatchCheck($clubId)
+    {
+        $fifteenMinuteAgo = Carbon::now()->subMinutes(15);
+        return DB::table('results')
+        ->where('match_date', '>=', $fifteenMinuteAgo)
+        ->where(function($query) use ($clubId) {
+            $query->where('home_team_id', '=', $clubId)
+                  ->orWhere('away_team_id', '=', $clubId);
+        })
+        ->pluck('id')
+        ->first();           
+    }
 }
