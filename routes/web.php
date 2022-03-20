@@ -33,7 +33,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/league/rank', 'App\Http\Controllers\MyDashboardController@rank')->middleware(['auth'])->name('leaguerank');
     Route::get('/cup/form', 'App\Http\Controllers\MyDashboardController@form')->middleware(['auth'])->name('cupform');
     Route::get('/cup/rank', 'App\Http\Controllers\MyDashboardController@rank')->middleware(['auth'])->name('cuprank');
-    Route::get('/media', 'App\Http\Controllers\MyDashboardController@media')->middleware(['auth'])->name('media');  
+    Route::get('/media', 'App\Http\Controllers\MyDashboardController@media')->middleware(['auth'])->name('media');
+    Route::get('/videos/playlist/{type}/{pageToken?}', 'App\Http\Controllers\MyDashboardController@videos')->middleware(['auth']);
 
     /* My routes */
     Route::get('/clubsinfo', 'App\Http\Controllers\StatsController@clubsInfo');
