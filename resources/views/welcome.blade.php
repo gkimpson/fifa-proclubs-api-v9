@@ -44,6 +44,11 @@
                     <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
                         Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
                     </div>
+                    <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
+                       This site is not affiliated with or endorsed by EA Sports 
+                    </div>
+
+
                 </div>
             </div>
         </div>
