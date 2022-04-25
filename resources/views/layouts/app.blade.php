@@ -21,7 +21,7 @@
         <script src="{{ asset('js/jquery-2.2.4.min.js') }}" defer></script>
         <script src="{{ asset('js/lity.min.js') }}" defer></script>
 
-        @stack('head-scripts')        
+        @stack('head-scripts')
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -39,5 +39,6 @@
                 {{ $slot }}
             </main>
         </div>
+        <script src="https://cdn.zipy.ai/sdk/v1.0/zipy.min.umd.js" crossorigin="anonymous"></script> <script> window.zipy && window.zipy.init('e038a759');</script>
     </body>
 </html>
