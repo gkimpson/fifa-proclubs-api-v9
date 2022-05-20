@@ -48,7 +48,6 @@ class GetMatchesCommand extends Command
             $this->info('Running...' . $this->description);
             $properties = User::pluck('properties')->unique();
 
-            $results = [];
             foreach ($properties as $key => $property) {
                 $this->info("[{$key}] Collecting matches data for - {$property->platform}/{$property->clubId}");
                 $results_1 = Result::formatData($this->handleResultByMatchType(Result::MATCH_TYPE_LEAGUE, $property), $property);
@@ -56,16 +55,16 @@ class GetMatchesCommand extends Command
                 $results = array_merge($results_1->toArray(), $results_2->toArray());
                 $count = count($results);
                 if ($showOutput) {
-                    $this->info("{$count} matches found");    
+                    $this->info("{$count} matches found");
                 }
-                
+
                 $inserted = Result::insertUniqueMatches($results, $property->platform, $showDebugging, $showOutput);
                 if ($showOutput) {
-                    $this->info("{$inserted} unique results into the database"); 
+                    $this->info("{$inserted} unique results into the database");
                 }
             }
             ray()->measure();
-            
+
             return 0;
         } catch (\Exception $e) {
             log::error($e->getMessage());
