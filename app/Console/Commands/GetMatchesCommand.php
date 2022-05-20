@@ -15,7 +15,7 @@ class GetMatchesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'proclubsapi:matches {output=y}';
+    protected $signature = 'proclubsapi:matches {output=y} {debugging=n}';
 
     /**
      * The console command description.
@@ -44,7 +44,16 @@ class GetMatchesCommand extends Command
         try {
             ray()->measure();
             $showOutput = ($this->argument('output') === 'y') ? true : false;
-            $showDebugging = false;
+            $showDebugging = ($this->argument('debugging') === 'y') ? true : false;
+
+            if ($showOutput) {
+                $this->info('Showing output...');
+            }
+
+            if ($showDebugging) {
+                $this->info('Showing debugging...');
+            }
+
             $this->info('Running...' . $this->description);
             $properties = User::pluck('properties')->unique();
 
