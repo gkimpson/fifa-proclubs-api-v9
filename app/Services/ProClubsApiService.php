@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
-class ProClubsApiService 
+class ProClubsApiService
 {
     const API_URL = 'https://proclubs.ea.com/api/fifa/';
     const REFERER = 'https://www.ea.com/';
@@ -26,13 +26,13 @@ class ProClubsApiService
     ];
 
     const LEADERBOARDS = [
-        'clubRankLeaderboard', 
+        'clubRankLeaderboard',
         'seasonRankLeaderboard'
     ];
 
     public function __construct()
     {
-        
+
     }
 
     public function index()
@@ -55,7 +55,7 @@ class ProClubsApiService
         // ])->get( self::API_URL . $endpoint, [
         //     'name' => 'Zabs'
         // ]);
-    }    
+    }
 
     static public function doExternalApiCall($endpoint = null, $params = [], $jsonDecoded = false, $isCLI = false)
     {
@@ -89,13 +89,13 @@ class ProClubsApiService
                 if ($isCLI) {
                     echo "Operation completed without any errors\n";
                 }
-            }          
+            }
 
             if(curl_errno($curl))
             {
                 echo 'Curl error: ' . curl_error($curl);
-            }   
-                       
+            }
+
             $response = curl_exec($curl);
             curl_close($curl);
             return ($jsonDecoded) ? json_decode($response) : $response;
@@ -103,7 +103,7 @@ class ProClubsApiService
         } catch (\Exception $e) {
             // do some logging...
             return false;
-        }        
+        }
     }
 
     /**
@@ -114,9 +114,9 @@ class ProClubsApiService
         if (!in_array($platform, self::PLATFORMS)) {
             abort(400, "{$platform} is an invalid platform");
         }
-        
+
         return $platform;
-    }    
+    }
 
     static public function clubsInfo($platform, $clubId)
     {
@@ -124,8 +124,8 @@ class ProClubsApiService
         $params = [
             'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform'],
             'clubIds' => ($clubId) ? $clubId : self::MYCLUB_DEFAULTS['clubId']
-        ]; 
-       
+        ];
+
         return self::doExternalApiCall($endpoint, $params);
     }
 
@@ -142,13 +142,13 @@ class ProClubsApiService
     }
 
     static public function careerStats($platform, $clubId, $raw = false)
-    {           
+    {
         $endpoint = 'members/career/stats?';
         $params = [
             'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform'],
             'clubId' => ($clubId) ? $clubId : self::MYCLUB_DEFAULTS['clubId']
-        ];     
-           
+        ];
+
         return self::doExternalApiCall($endpoint, $params);
     }
 
@@ -158,7 +158,7 @@ class ProClubsApiService
         $params = [
             'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform'],
             'clubId' => ($clubId) ? $clubId : self::MYCLUB_DEFAULTS['clubId']
-        ];     
+        ];
 
         return self::doExternalApiCall($endpoint, $params);
     }
@@ -170,7 +170,7 @@ class ProClubsApiService
         $membersData = $collection->map(function ($item, $key) {
             $item->proPosition = FutCardGeneratorService::MAPPED_POSITIONS[$item->proPos];
             return $item;
-        });      
+        });
 
         $membersData = $membersData->sortBy([
             ['proOverall', 'desc'],
@@ -186,10 +186,10 @@ class ProClubsApiService
         $params = [
             'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform'],
             'clubIds' => ($clubId) ? $clubId : self::MYCLUB_DEFAULTS['clubId']
-        ];    
-           
-        return self::doExternalApiCall($endpoint, $params);        
-    }    
+        ];
+
+        return self::doExternalApiCall($endpoint, $params);
+    }
 
     static public function settings()
     {
@@ -203,10 +203,10 @@ class ProClubsApiService
         $params = [
             'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform'],
             'clubName' => ($clubName) ? $clubName : self::MYCLUB_DEFAULTS['clubName']
-        ];  
+        ];
 
         $items = collect(json_decode(self::doExternalApiCall($endpoint, $params)));
-    
+
         $results = [];
         foreach($items as $clubId => &$item) {
             if (property_exists($item, 'seasons')) {
@@ -220,7 +220,7 @@ class ProClubsApiService
                     $results[] = array(
                         'item' => $item,
                         'customCrestUrl' => "https://media.contentapi.ea.com/content/dam/ea/fifa/fifa-21/pro-clubs/common/pro-clubs/crest-default.png",
-                    );                    
+                    );
                 }
 
             } else {
@@ -237,17 +237,17 @@ class ProClubsApiService
             'club' => 'clubRankLeaderboard?',
             'season' => 'seasonRankLeaderboard?',
             default => 'clubRankLeaderboard?'
-        };        
+        };
 
         if (!$endpoint) {
             abort(400, 'Invalid leaderboard type');
         }
-        
+
         $params = [
             'platform' => ($platform) ? self::checkValidPlatform($platform) : self::MYCLUB_DEFAULTS['platform']
         ];
 
-        return self::doExternalApiCall($endpoint, $params);         
+        return self::doExternalApiCall($endpoint, $params);
     }
 
 }

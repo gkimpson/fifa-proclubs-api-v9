@@ -30,7 +30,7 @@ class Result extends Model
         'properties' => 'json'
     ];
 
-    public function getMatchDateAttribute($value) 
+    public function getMatchDateAttribute($value)
     {
         return Carbon::parse($value);
     }
@@ -43,13 +43,13 @@ class Result extends Model
 
         if (!$properties->platform) {
             abort(404, 'Missing platform');
-        }        
-        
+        }
+
         return Result::where('home_team_id', '=', $properties->clubId)
                     ->orWhere('away_team_id', '=', $properties->clubId)
                     ->orderBy('match_date', 'desc')
                     ->paginate(SELF::PAGINATION);
-    }    
+    }
 
     public static function insertUniqueMatches($matches, $platform = null, $showDebugging = false, $showOutput = false)
     {
@@ -77,12 +77,12 @@ class Result extends Model
                     ],
                     'platform' => $platform
                 ];
-                
+
                 if ($showDebugging) {
                     DB::enableQueryLog();
                     dump($data);
                 }
-                
+
                 try {
                     Result::create($data);
                     $inserted++;
@@ -90,8 +90,8 @@ class Result extends Model
                     if ($showOutput) {
                         dump('inserted matchId: '. $match['matchId']);
                     }
-                    
-                    
+
+
                  } catch (\Exception $e) {
                     dump($e->getMessage());
                  }
@@ -103,14 +103,14 @@ class Result extends Model
             }
         }
         return $inserted;
-    }    
+    }
 
     public static function formatData($data, $params)
-    {   
+    {
         try {
             $collection = collect(json_decode($data));
             $results = [];
-            
+
             foreach ($collection as $key => $value) {
                 $results[] = [
                     'matchId' => $value->matchId,
@@ -120,7 +120,7 @@ class Result extends Model
                     'aggregate' => $value->aggregate
                 ];
             }
-            
+
             return collect($results);
         } catch (\Exception $e) {
             // do some logging...
@@ -128,7 +128,7 @@ class Result extends Model
         }
     }
 
-    private static function getClubsData($clubs, $params) 
+    private static function getClubsData($clubs, $params)
     {
         $clubs = collect($clubs);
         $data = [];
@@ -161,7 +161,7 @@ class Result extends Model
     private static function getPlayerData($players)
     {
         $players = collect($players);
-        
+
         foreach ($players as $clubId => $clubPlayer) {
             // loop through each player(s) for each club
             foreach ($players[$clubId] as $clubPlayer) {
@@ -191,17 +191,17 @@ class Result extends Model
                     'wins' => $clubPlayer->wins,
                     'playername' => $clubPlayer->playername,
                     'properties' => $clubPlayer
-                ];                
+                ];
             }
         }
 
         return $data;
-    }  
+    }
 
     private static function getProAttributes($attributes)
     {
         return $attributes;
-    }    
+    }
 
     /**
      * get match outcome based on stats from 'home' team (club[0])
@@ -219,13 +219,13 @@ class Result extends Model
         }
 
         return $outcome;
-    }    
+    }
 
     /**
      * @clubId clubId integer
      * @limit limit integer defaults to 30
      * @results
-     */    
+     */
     static public function getCurrentStreak($clubId, $limit = 30, $results = [])
     {
         $streaks = [ 'W' => 0, 'L' => 0, 'D' => 0 ];
@@ -241,10 +241,10 @@ class Result extends Model
             } else {
                 throw new \Exception('Unable to process match outcome should be players$players W, D or L', 1);
             }
-        }   
+        }
 
         // $outcomes = array_reverse($outcomes);   // reverse the array.
-        $last = array_shift($outcomes);         // shift takes out the first element, but we reversed it, so it's last.  
+        $last = array_shift($outcomes);         // shift takes out the first element, but we reversed it, so it's last.
         $counter = 1;                           // current streak;
         foreach ($outcomes as $result) {        // iterate the array (backwords, since reversed)
             if ($result != $last) break;        // if streak breaks, break out of the loop
@@ -282,8 +282,8 @@ class Result extends Model
             } else {
                 throw new \Exception('Unable to process match outcome should be players$players W, D or L', 1);
             }
-        }                    
-                    
+        }
+
         $streaks = array();
         $prev_value = array('value' => null, 'amount' => null);
         foreach ($outcomes as $val) {
@@ -292,11 +292,11 @@ class Result extends Model
                 $prev_value = array('value' => $val, 'amount' => 0);
                 $streaks[] =& $prev_value;
             }
-        
+
             $prev_value['amount']++;
         }
 
-        // get ALL consecutive streaks        
+        // get ALL consecutive streaks
         $collection = collect($streaks)->sortByDesc('amount', SORT_NATURAL);
 
         $maxStreaks = collect([
@@ -356,7 +356,7 @@ class Result extends Model
     public function getHomeTeamCrestUrlAttribute()
     {
         $teams = $this->getTeamIdsAttribute();
-        return $teams['home'] ?? 'https://media.contentapi.ea.com/content/dam/ea/fifa/fifa-21/pro-clubs/common/pro-clubs/crest-default.png';   
+        return $teams['home'] ?? 'https://media.contentapi.ea.com/content/dam/ea/fifa/fifa-21/pro-clubs/common/pro-clubs/crest-default.png';
     }
 
     /**
@@ -366,8 +366,8 @@ class Result extends Model
     public function getAwayTeamCrestUrlAttribute()
     {
         $teams = $this->getTeamIdsAttribute();
-        return $teams['away'] ?? 'https://media.contentapi.ea.com/content/dam/ea/fifa/fifa-21/pro-clubs/common/pro-clubs/crest-default.png';     
-    }    
+        return $teams['away'] ?? 'https://media.contentapi.ea.com/content/dam/ea/fifa/fifa-21/pro-clubs/common/pro-clubs/crest-default.png';
+    }
 
     /**
      * explodes media ids into array
@@ -382,11 +382,11 @@ class Result extends Model
                 $youtubeIds = Str::of($mediaIds)->explode(',');
                 // dump($youtubeIds);
             }
-            
+
             if (is_object($youtubeIds)) {
                 $youtubeIds = array_filter($youtubeIds->toArray());
 
-            }            
+            }
         }
 
         return $youtubeIds;
@@ -441,7 +441,7 @@ class Result extends Model
     }
 
     /**
-     * 
+     *
      */
     public static function getPlayersRecentForm($properties, $matchesLimit = 100)
     {
@@ -451,8 +451,8 @@ class Result extends Model
 
         if (!$properties->platform) {
             abort(404, 'Missing platform');
-        }        
-        
+        }
+
         $results = Result::where('home_team_id', '=', $properties->clubId)
                     ->orWhere('away_team_id', '=', $properties->clubId)
                     ->orderBy('match_date', 'desc')
@@ -464,7 +464,7 @@ class Result extends Model
             $playerName = ($club->has($key)) ? $club[$key]['playername'] : null;
             return $playerName;
         });
-        
+
         dd($collection->filter());
     }
 
@@ -508,6 +508,6 @@ class Result extends Model
                   ->orWhere('away_team_id', '=', $clubId);
         })
         ->pluck('id')
-        ->first();           
+        ->first();
     }
 }
