@@ -45,7 +45,6 @@ class getClubDataCommand extends Command
 
         $matchType = 'MATCH_TYPE_'. mb_strtoupper($$matchType);
         $matchTypeConstant = constant("App\Models\Result::$matchType");
-
         $properties = User::where('email', $email)->pluck('properties')->first();
 
         if (empty($properties->platform) || (empty($properties->clubId))) {
