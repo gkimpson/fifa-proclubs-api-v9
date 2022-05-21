@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Services\ProClubsApiService;
 use Illuminate\Console\Command;
 
-class getClubDataCommand extends Command
+class GetClubDataCommand extends Command
 {
     /**
      * The name and signature of the console command.
