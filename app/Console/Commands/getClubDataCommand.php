@@ -47,9 +47,14 @@ class getClubDataCommand extends Command
         $matchTypeConstant = constant("App\Models\Result::$matchType");
 
         $properties = User::where('email', $email)->pluck('properties')->first();
-        $json = ProClubsApiService::matchStats($properties->platform, $properties->clubId, $matchTypeConstant);
 
+        if (empty($properties->platform) || (empty($properties->clubId))) {
+            die('Cannot retrieve match stats - missing user properties');
+        }
+
+        $json = ProClubsApiService::matchStats($properties->platform, $properties->clubId, $matchTypeConstant);
         dump($json);
+
         return 0;
     }
 }
