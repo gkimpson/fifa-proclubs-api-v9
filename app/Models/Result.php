@@ -443,7 +443,7 @@ class Result extends Model
     /**
      *
      */
-    public static function getPlayersRecentForm($properties, $matchesLimit = 100)
+    public static function getPlayersRecentForm($properties, $matchesLimit = 1)
     {
         if (!$properties->clubId) {
             abort(404, 'Missing clubId');

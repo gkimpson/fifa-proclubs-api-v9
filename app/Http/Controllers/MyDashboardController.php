@@ -43,9 +43,8 @@ class MyDashboardController extends Controller
     public function debug()
     {
         $user = auth()->user();
-        // $futCard = new FutCardGeneratorService();
-        // $futCard->generate();
-        // dd($futCard);
+         $futCard = new FutCardGeneratorService();
+         $futCard->generate();
 
         Result::getPlayersRecentForm($user->properties);
     }
@@ -53,16 +52,16 @@ class MyDashboardController extends Controller
     public function cup()
     {
         $user = auth()->user();
-        $data = [];        
+        $data = [];
         return view('dashboard.matches', $data);
     }
 
     public function league()
     {
         $user = auth()->user();
-        $data = [];        
+        $data = [];
         return view('dashboard.matches', $data);
-    }    
+    }
 
     public function squad(Request $request)
     {
@@ -73,7 +72,7 @@ class MyDashboardController extends Controller
             'careerStats' => $controller->careerStats($request),
             'seasonStats' => $controller->seasonStats($request)
         ];
-        
+
         return view('dashboard.squad', $data);
     }
 
@@ -87,37 +86,37 @@ class MyDashboardController extends Controller
             'club' => $controller->clubsInfo($request),
             'seasonStats' => $controller->seasonStats($request)
         ];
-        
+
         return view('dashboard.club', $data);
-    }       
+    }
 
     public function form()
     {
         $user = auth()->user();
         $data = [];
         return view('dashboard.form', $data);
-    } 
-    
+    }
+
     public function rank()
     {
         $user = auth()->user();
         $data = [];
         return view('dashboard.rank', $data);
-    }     
+    }
 
     public function media()
     {
         $user = auth()->user();
         $platform = $user->properties->platform;
-        $clubId = $user->properties->clubId; 
+        $clubId = $user->properties->clubId;
         $media = Result::getMedia($platform, $clubId);
-        
+
         $data = [
             'media' => $media['pagination'],
             'formatted' => $media['formatted']
         ];
 
         return view('dashboard.media', $data);
-    }    
-        
+    }
+
 }

@@ -22,8 +22,8 @@ Route::get('/', function () {
 // })->middleware(['auth'])->name('dashboard');
 
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('/dashboard', 'App\Http\Controllers\MyDashboardController@index')->middleware(['auth'])->name('dashboard'); 
-    Route::get('/debug', 'App\Http\Controllers\MyDashboardController@debug')->middleware(['auth'])->name('debug'); 
+    Route::get('/dashboard', 'App\Http\Controllers\MyDashboardController@index')->middleware(['auth'])->name('dashboard');
+    Route::get('/debug', 'App\Http\Controllers\MyDashboardController@debug')->middleware(['auth'])->name('debug');
 
     Route::get('/club', 'App\Http\Controllers\MyDashboardController@club')->middleware(['auth'])->name('club');
     Route::get('/squad', 'App\Http\Controllers\MyDashboardController@squad')->middleware(['auth'])->name('squad');
@@ -33,7 +33,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/league/rank', 'App\Http\Controllers\MyDashboardController@rank')->middleware(['auth'])->name('leaguerank');
     Route::get('/cup/form', 'App\Http\Controllers\MyDashboardController@form')->middleware(['auth'])->name('cupform');
     Route::get('/cup/rank', 'App\Http\Controllers\MyDashboardController@rank')->middleware(['auth'])->name('cuprank');
-    Route::get('/media', 'App\Http\Controllers\MyDashboardController@media')->middleware(['auth'])->name('media');  
+    Route::get('/media', 'App\Http\Controllers\MyDashboardController@media')->middleware(['auth'])->name('media');
 
     /* My routes */
     Route::get('/clubsinfo', 'App\Http\Controllers\StatsController@clubsInfo');
@@ -44,7 +44,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/matchstats', 'App\Http\Controllers\StatsController@matchStats');
     Route::get('/search', 'App\Http\Controllers\StatsController@search');
     Route::get('/settings', 'App\Http\Controllers\StatsController@settings');
-    Route::get('/club/{platform}/{clubId}/{player}', 'App\Http\Controllers\StatsController@player');
+
     Route::post('highlights', 'App\Http\Controllers\StatsController@highlights');
 });
 
