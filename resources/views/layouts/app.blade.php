@@ -37,10 +37,6 @@
 
             <!-- Page Content -->
             <main>
-                <x-bladewind.datepicker
-                    css="!w-40"
-                    placeholder="Invoice Date"  />
-
                 {{ $slot }}
             </main>
         </div>
