@@ -42,7 +42,6 @@ class MyDashboardController extends Controller
 
 //        dump($data['results'][1]->team_player_counts);
         // dd($data['results'][0]->top_rated_players[310718][0]->properties);
-        Result::backfillPlayerCounts();
         return view('dashboard', $data);
     }
 
