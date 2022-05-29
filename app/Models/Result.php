@@ -25,7 +25,7 @@ class Result extends Model
 
     // protected $fillable = ['match_id', 'home_team_id', 'away_team_id', 'home_team_goals', 'away_team_goals', 'outcome', 'match_date', 'properties', 'platform', 'media'];
     protected $guarded = [];
-    protected $appends = ['media_ids', 'my_club_home_or_away', 'team_ids', 'home_team_crest_url', 'away_team_crest_url', 'top_rated_players'];
+    protected $appends = ['media_ids', 'my_club_home_or_away', 'team_ids', 'home_team_crest_url', 'away_team_crest_url', 'top_rated_players', 'team_player_counts'];
     protected $casts = [
         'properties' => 'json'
     ];
@@ -440,6 +440,35 @@ class Result extends Model
         });
     }
 
+    public function getTeamPlayerCountsAttribute()
+    {
+        $clubPlayers = collect($this->properties['players']);
+        return $clubPlayers->map(function ($players) {
+            $players = collect($players);
+            return $players->count();
+        });
+    }
+
+    /**
+     * requires migration - backfills the player counts column
+     */
+    public static function backfillPlayerCounts()
+    {
+        $results = Result::limit(10000)->get();
+        $updated = 0;
+        foreach ($results as $result) {
+            $resultId = $result['id'];
+            $row = Result::find($resultId);
+            $row->home_team_player_count = $result->team_player_counts[$result->home_team_id];
+            $row->away_team_player_count = $result->team_player_counts[$result->away_team_id];
+            if ($row->save())
+            {
+                $updated++;
+            }
+        }
+        return $updated;
+    }
+
     /**
      *
      */
@@ -509,5 +538,10 @@ class Result extends Model
         })
         ->pluck('id')
         ->first();
+    }
+
+    public static function getStatsByPlayerCounts()
+    {
+
     }
 }

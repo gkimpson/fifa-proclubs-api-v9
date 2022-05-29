@@ -33,9 +33,16 @@ class MyDashboardController extends Controller
                 'current' => $streaks['current'],
                 'max' => $streaks['max'],
             ],
+            'breadcrumbs' => [
+                'dashboard' => [
+                    'name' => 'Dashboard'
+                ],
+            ]
         ];
 
+//        dump($data['results'][1]->team_player_counts);
         // dd($data['results'][0]->top_rated_players[310718][0]->properties);
+        Result::backfillPlayerCounts();
         return view('dashboard', $data);
     }
 
@@ -43,8 +50,8 @@ class MyDashboardController extends Controller
     public function debug()
     {
         $user = auth()->user();
-         $futCard = new FutCardGeneratorService();
-         $futCard->generate();
+        $futCard = new FutCardGeneratorService();
+        $futCard->generate();
 
         Result::getPlayersRecentForm($user->properties);
     }
@@ -84,7 +91,12 @@ class MyDashboardController extends Controller
         $data = [
             'myClubId' => $clubId = $user->properties->clubId,
             'club' => $controller->clubsInfo($request),
-            'seasonStats' => $controller->seasonStats($request)
+            'seasonStats' => $controller->seasonStats($request),
+            'breadcrumbs' => [
+                'club' => [
+                    'name' => 'Club'
+                ],
+            ]
         ];
 
         return view('dashboard.club', $data);
