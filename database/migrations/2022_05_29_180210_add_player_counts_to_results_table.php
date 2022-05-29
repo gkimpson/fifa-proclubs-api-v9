@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('results', function (Blueprint $table) {
-            $table->unsignedTinyInteger('home_team_player_count')->after('away_team_goals');
-            $table->unsignedTinyInteger('away_team_player_count')->after('home_team_player_count');
+            $table->unsignedTinyInteger('home_team_player_count')->default(0)->after('away_team_goals');
+            $table->unsignedTinyInteger('away_team_player_count')->default(0)->after('home_team_player_count');
         });
     }
 
