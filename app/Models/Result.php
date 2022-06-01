@@ -55,7 +55,7 @@ class Result extends Model
     {
         $inserted = 0;
 
-        foreach ($matches as $matchType => $match) {
+        foreach ($matches as $key => $match) {
             // check if existing match already exists in the db, if so don't re-insert this
             if (Result::where('match_id', '=', $match['matchId'])->doesntExist()) {
                 $carbonDate = Carbon::now();
@@ -68,6 +68,8 @@ class Result extends Model
                     'away_team_id' => $clubs[1]['id'],
                     'home_team_goals' => $clubs[0]['goals'],
                     'away_team_goals' => $clubs[1]['goals'],
+                    'home_team_player_count' => count($match['players'][$clubs[0]['id']]),
+                    'away_team_player_count' => count($match['players'][$clubs[1]['id']]),
                     'outcome' => self::getMatchOutcome($clubs[0]),
                     'match_date' => $carbonDate->format('Y-m-d H:i:s'),
                     'properties' => [
@@ -99,7 +101,6 @@ class Result extends Model
                  if ($showDebugging) {
                     dump(DB::getQueryLog());
                  }
-
             }
         }
         return $inserted;
