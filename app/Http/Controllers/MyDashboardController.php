@@ -16,7 +16,7 @@ use Artisan;
 
 class MyDashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
 
@@ -25,9 +25,13 @@ class MyDashboardController extends Controller
             Artisan::call('proclubsapi:matches n'); // 'n' (no) param removes any output to the browser otherwise it outputs the dumps
         }
 
+        $filters = [
+          'from' => $request->query('from') ?? null
+        ];
+
         $streaks = Result::getResultsForStreaks($user->properties->clubId);
         $data = [
-            'results' => Result::getResults($user->properties),
+            'results' => Result::getResults($user->properties, $filters),
             'myClubId' => (int)$user->properties->clubId,
             'streaks' => [
                 'current' => $streaks['current'],
@@ -44,7 +48,6 @@ class MyDashboardController extends Controller
         // dd($data['results'][0]->top_rated_players[310718][0]->properties);
         return view('dashboard', $data);
     }
-
 
     public function debug()
     {
@@ -84,13 +87,14 @@ class MyDashboardController extends Controller
 
     public function club(Request $request)
     {
+        $apiData = json_decode(ProClubsApiService::memberStats($request->input('platform'), $request->input('clubId')));
         $user = auth()->user();
-        $controller = new StatsController();
-
         $data = [
-            'myClubId' => $clubId = $user->properties->clubId,
-            'club' => $controller->clubsInfo($request),
-            'seasonStats' => $controller->seasonStats($request),
+            'members' => ProClubsApiService::formatMembersData($apiData->members),
+            'positions' => $apiData->positionCount,
+            'platform' => $user->properties->platform,
+            'clubId' => $user->properties->clubId,
+            'myClubId' => $user->properties->clubId,
             'breadcrumbs' => [
                 'club' => [
                     'name' => 'Club'
@@ -98,7 +102,7 @@ class MyDashboardController extends Controller
             ]
         ];
 
-        return view('dashboard.club', $data);
+        return view('dashboard.members', $data);
     }
 
     public function form()

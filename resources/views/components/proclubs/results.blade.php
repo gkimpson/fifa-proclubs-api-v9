@@ -11,6 +11,28 @@
         </thead>
         <tbody>
         <div class="px-2 py-2 md:px-5 md:py-5 flex-1">{{ $results->links() }}</div>
+
+        <div class="flex flex-row">
+            <div class="basis-1/4"></div>
+            <div class="basis-1/4"></div>
+            <div class="basis-1/4"></div>
+            <div class="basis-1/4">
+{{--                <x-bladewind.datepicker required="true"  />--}}
+
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                    </div>
+                    <input datepicker datepicker-autohide type="text" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                </div>
+                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path></svg>
+                    Filter
+                </button>
+
+            </div>
+        </div>
+
         <div class="px-5 py-1">
             Current Streak - {{ $streaks['current']['streak'] }}
             @if ($streaks['current']['type'] === 'W') Wins @endif
@@ -96,7 +118,7 @@
                                             <label class="block mb-2">Youtube URL:</label>
                                             <input type="text" class="border w-full p-1" x-model="formData.youtubeURL" placeholder="www.youtube.com/watch?v=xxxxxxx" required>
                                         </div>
-                                        <button @click="showModal = false" class="bg-gray-700 hover:bg-gray-800 disabled:opacity-50 text-white w-full p-2 mb-4" x-text="buttonLabel"
+                                        <button @click="showModal = false" class="bg-gray-700 hover:bg-gray-800 disabled:opacity-50 text-black w-full p-2 mb-4" x-text="buttonLabel"
                                                 :disabled="loading"></button>
                                         {{-- <div x-text="JSON.stringify(formData)"> --}}
                                         {{-- <p x-text="message"></p> --}}
@@ -185,7 +207,7 @@
                                             <label class="block mb-2">Youtube URL:</label>
                                             <input type="text" class="border w-full p-1" x-model="formData.youtubeURL" placeholder="www.youtube.com/watch?v=xxxxxxx" required>
                                         </div>
-                                        <button @click="showModal = false" class="bg-gray-700 hover:bg-gray-800 disabled:opacity-50 text-white w-full p-2 mb-4" x-text="buttonLabel"
+                                        <button @click="showModal = false" class="bg-gray-700 hover:bg-gray-800 disabled:opacity-50 text-black w-full p-2 mb-4" x-text="buttonLabel"
                                                 :disabled="loading"></button>
                                     </form>
                                 </div>
@@ -247,20 +269,20 @@
                                                 @isset($player->properties['goals'])
                                                     @for ($i = 0; $i < $player->properties['goals']; $i++)
                                                         <span><i class="fa-solid fa-futbol"></i><span>
-                                                                @endfor
-                                                                @endif
+                                                    @endfor
+                                                @endisset
 
-                                                                @isset($player->properties['goals'])
-                                                                    @for ($i = 0; $i < $player->properties['assists']; $i++)
-                                                                        <span><i class="fa-solid fa-handshake-angle"></i></span>
-                                                                    @endfor
-                                                                @endif
+                                                @isset($player->properties['goals'])
+                                                    @for ($i = 0; $i < $player->properties['assists']; $i++)
+                                                        <span><i class="fa-solid fa-handshake-angle"></i></span>
+                                                    @endfor
+                                                @endisset
 
-                                                                @isset($player->properties['tacklesmade'])
-                                                                    @for ($i = 0; $i < $player->properties['tacklesmade']; $i++)
-                                                                        <span><i class="fa-solid fa-bandage"></i></span>
-                                                                    @endfor
-                                                @endif
+                                                @isset($player->properties['tacklesmade'])
+                                                    @for ($i = 0; $i < $player->properties['tacklesmade']; $i++)
+                                                        <span><i class="fa-solid fa-bandage"></i></span>
+                                                    @endfor
+                                                @endisset
                                             </div>
 
                                             <div class="flex w-full items-center flex justify-center items-center py-1 px-4">
@@ -331,20 +353,20 @@
                                                 @isset($player->properties['goals'])
                                                     @for ($i = 0; $i < $player->properties['goals']; $i++)
                                                         <span><i class="fa-solid fa-futbol"></i><span>
-                                                                @endfor
-                                                                @endif
-
-                                                                @isset($player->properties['goals'])
-                                                                    @for ($i = 0; $i < $player->properties['assists']; $i++)
-                                                                        <span><i class="fa-solid fa-handshake-angle"></i></span>
-                                                                    @endfor
-                                                                @endif
-
-                                                                @isset($player->properties['tacklesmade'])
-                                                                    @for ($i = 0; $i < $player->properties['tacklesmade']; $i++)
-                                                                        <span><i class="fa-solid fa-bandage"></i></span>
                                                     @endfor
-                                                @endif
+                                                @endisset
+
+                                                @isset($player->properties['goals'])
+                                                    @for ($i = 0; $i < $player->properties['assists']; $i++)
+                                                        <span><i class="fa-solid fa-handshake-angle"></i></span>
+                                                    @endfor
+                                                @endisset
+
+                                                @isset($player->properties['tacklesmade'])
+                                                    @for ($i = 0; $i < $player->properties['tacklesmade']; $i++)
+                                                        <span><i class="fa-solid fa-bandage"></i></span>
+                                                    @endfor
+                                                @endisset
                                             </div>
 
                                             <div class="flex w-full items-center flex justify-center items-center py-1 px-4">
@@ -362,3 +384,6 @@
         </tbody>
     </table>
 </div>
+@pushOnce('head-scripts')
+    <script src="https://unpkg.com/flowbite@1.4.7/dist/datepicker.js"></script>
+@endPushOnce

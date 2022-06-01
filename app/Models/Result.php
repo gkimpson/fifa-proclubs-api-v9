@@ -35,7 +35,7 @@ class Result extends Model
         return Carbon::parse($value);
     }
 
-    public static function getResults($properties)
+    public static function getResults($properties, $filters = [])
     {
         if (!$properties->clubId) {
             abort(404, 'Missing clubId');
@@ -45,10 +45,20 @@ class Result extends Model
             abort(404, 'Missing platform');
         }
 
-        return Result::where('home_team_id', '=', $properties->clubId)
-                    ->orWhere('away_team_id', '=', $properties->clubId)
-                    ->orderBy('match_date', 'desc')
-                    ->paginate(SELF::PAGINATION);
+        $results = Result::where('home_team_id', '=', $properties->clubId)
+            ->orWhere('away_team_id', '=', $properties->clubId);
+
+        if (!empty($filters['from'])) {
+            dump($filters['from']);
+            $dt = Carbon::parse($filters['from']);dump($dt);
+//            $from_date = Carbon::createFromFormat('d-m-Y', $filters['from'])->format('d-m-Y');
+//            dump($from_date);
+            $results->where('match_date', '>', $dt);
+        }
+
+        $results->orderBy('match_date', 'desc');
+        return $results->paginate(SELF::PAGINATION);
+
     }
 
     public static function insertUniqueMatches($matches, $platform = null, $showDebugging = false, $showOutput = false)
