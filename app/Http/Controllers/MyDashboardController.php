@@ -26,7 +26,8 @@ class MyDashboardController extends Controller
         }
 
         $filters = [
-          'from' => $request->query('from') ?? null
+          'start' => $request->query('start') ?? null,
+          'end' => $request->query('end') ?? null,
         ];
 
         $streaks = Result::getResultsForStreaks($user->properties->clubId);

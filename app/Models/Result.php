@@ -45,20 +45,21 @@ class Result extends Model
             abort(404, 'Missing platform');
         }
 
-        $results = Result::where('home_team_id', '=', $properties->clubId)
-            ->orWhere('away_team_id', '=', $properties->clubId);
+        $clubId = $properties->clubId;
+        $results = Result::where(function($query) use ($clubId) {
+            $query->where('home_team_id', '=', $clubId)
+                ->orWhere('away_team_id', '=', $clubId);
+        });
 
-        if (!empty($filters['from'])) {
-            dump($filters['from']);
-            $dt = Carbon::parse($filters['from']);dump($dt);
-//            $from_date = Carbon::createFromFormat('d-m-Y', $filters['from'])->format('d-m-Y');
-//            dump($from_date);
-            $results->where('match_date', '>', $dt);
+        if (!empty($filters['start'])) {
+            $results->where('match_date', '>', Carbon::parse($filters['start']));
         }
 
-        $results->orderBy('match_date', 'desc');
-        return $results->paginate(SELF::PAGINATION);
+        if (!empty($filters['end'])) {
+            $results->where('match_date', '<', Carbon::parse($filters['end']));
+        }
 
+        return $results->orderBy('id', 'desc')->paginate(SELF::PAGINATION)->withQueryString();
     }
 
     public static function insertUniqueMatches($matches, $platform = null, $showDebugging = false, $showOutput = false)
