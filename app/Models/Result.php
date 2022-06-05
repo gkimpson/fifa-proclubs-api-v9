@@ -323,9 +323,11 @@ class Result extends Model
     static public function getResultsForStreaks($clubId, $limit = 100)
     {
         $results = Result::select(['id', 'home_team_id', 'away_team_id', 'outcome', 'properties'])
-                    ->where('home_team_id', '=', $clubId)
-                    ->orWhere('away_team_id', '=', $clubId)
-                    ->orderBy('match_date', 'desc')->limit($limit)->get()->toArray();
+            ->where(function($query) use ($clubId) {
+                $query->where('home_team_id', '=', $clubId)
+                    ->orWhere('away_team_id', '=', $clubId);
+            })
+            ->orderBy('match_date', 'desc')->limit($limit)->get()->toArray();
 
         return [
             'max' => self::getMaxStreaksByClubId($clubId, $limit, $results),
