@@ -141,7 +141,7 @@ class ProClubsApiService
         return self::doExternalApiCall($endpoint, $params);
     }
 
-    static public function careerStats($platform, $clubId, $raw = false)
+    static public function careerStats($platform, $clubId)
     {
         $endpoint = 'members/career/stats?';
         $params = [
