@@ -36,32 +36,20 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/media', 'App\Http\Controllers\MyDashboardController@media')->middleware(['auth'])->name('media');
 
     /* My routes */
-    Route::get('/clubsinfo', 'App\Http\Controllers\StatsController@clubsInfo');
-    Route::get('/careerstats', 'App\Http\Controllers\StatsController@careerStats');
-    Route::get('/memberstats', 'App\Http\Controllers\StatsController@memberStats');
-    Route::get('/memberstats/player/{playerId}', 'App\Http\Controllers\StatsController@playerCard');
-    Route::get('/seasonstats', 'App\Http\Controllers\StatsController@seasonStats');
-    Route::get('/matchstats', 'App\Http\Controllers\StatsController@matchStats');
-    Route::get('/search', 'App\Http\Controllers\StatsController@search');
-    Route::get('/settings', 'App\Http\Controllers\StatsController@settings');
-
-    Route::post('highlights', 'App\Http\Controllers\StatsController@highlights');
+    Route::get('/clubsinfo', [App\Http\Controllers\StatsController::class,'clubsinfo']);
+    Route::get('/careerstats', [App\Http\Controllers\StatsController::class, 'careerstats']);
+    Route::get('/memberstats', [App\Http\Controllers\StatsController::class, 'memberStats']);
+    Route::get('/memberstats/player/{playerId}', [App\Http\Controllers\StatsController::class, 'playerCard']);
+    Route::get('/seasonstats', [App\Http\Controllers\StatsController::class, 'seasonStats']);
+    Route::get('/matchstats', [App\Http\Controllers\StatsController::class, 'matchStats']);
+    Route::get('/search', [App\Http\Controllers\StatsController::class, 'search']);
+    Route::get('/settings', [App\Http\Controllers\StatsController::class, 'settings']);
+    Route::post('/highlights', [App\Http\Controllers\StatsController::class, 'highlights']);
+    Route::post('/leaderboard/club', [App\Http\Controllers\StatsController::class, 'leaderboard']);
+    Route::post('/seasonleaderboard', [App\Http\Controllers\StatsController::class, 'seasonleaderboard']);
+    Route::post('/clubleaderboard', [App\Http\Controllers\StatsController::class, 'clubleaderboard']);
+    Route::post('/command', [App\Http\Controllers\StatsController::class, 'command']);
 });
-
-/* My routes */
-Route::get('/clubsinfo', 'App\Http\Controllers\StatsController@clubsInfo');
-Route::get('/careerstats', 'App\Http\Controllers\StatsController@careerStats');
-Route::get('/memberstats', 'App\Http\Controllers\StatsController@memberStats');
-Route::get('/memberstats/{platform}/{clubId}/{playerId}', 'App\Http\Controllers\StatsController@playerCard');
-Route::get('/seasonstats', 'App\Http\Controllers\StatsController@seasonStats');
-Route::get('/matchstats', 'App\Http\Controllers\StatsController@matchStats');
-Route::get('/search', 'App\Http\Controllers\StatsController@search');
-Route::get('/settings', 'App\Http\Controllers\StatsController@settings');
-
-Route::get('/leaderboard/club', 'App\Http\Controllers\StatsController@leaderboard');
-// Route::get('/seasonleaderboard', 'App\Http\Controllers\StatsController@seasonalLeaderboard');
-// Route::get('/clubleaderboard', 'App\Http\Controllers\StatsController@clubLeaderboard');
-Route::get('/command', 'App\Http\Controllers\StatsController@runCommand');
 
 
 Route::prefix('ps5-xbsxs')->group(function () {

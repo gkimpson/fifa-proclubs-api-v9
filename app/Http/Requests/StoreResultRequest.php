@@ -23,6 +23,7 @@ class StoreResultRequest extends FormRequest
      */
     public function rules()
     {
+        //todo use this for setting up the validation rules
         return [
             //
         ];
