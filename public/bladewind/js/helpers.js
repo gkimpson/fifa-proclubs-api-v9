@@ -4,26 +4,40 @@
 **/
 var     notification_timeout,
         user_function, 
-        el_name,
-        momo_obj,
-        delete_obj;
+        el_name;
 var     dropdownIsOpen = false;
 
+domEl = (element) => { return dom_el(element); }
 dom_el = (element) => { return (document.querySelector(element) != null) ? document.querySelector(element) : false;  }
 
+domEls = (element) => { return dom_els(element); }
 dom_els = (element) => { return (document.querySelectorAll(element).length>0) ? document.querySelectorAll(element) : false;  }
 
-validateForm = (element) => {
+validateForm = (form) => {
     let has_error = 0;
     let BreakException = {};
     try{
-        dom_els(`${element} .required`).forEach((el) => {
+        dom_els(`${form} .required`).forEach((el) => {
             el.classList.remove('!border-red-400');
             if ( el.value === '' ) {
+                let el_name = el.getAttribute('name');
+                let error_message = el.getAttribute('data-error-message');
+                let show_error_inline = el.getAttribute('data-error-inline');
+                let error_heading = el.getAttribute('data-error-heading');
                 el.classList.add('!border-red-400');
                 el.focus();
+                if(error_message){
+                    (show_error_inline == 'true') ? unhide(`.${el_name}-inline-error`) : 
+                    showNotification(error_heading, error_message, 'error');
+                }
                 el.addEventListener('keyup', () => { 
-                    (el.value !== '') ? el.classList.remove('!border-red-400') : el.classList.add('!border-red-400'); 
+                    if(el.value !== '') {
+                        el.classList.remove('!border-red-400');
+                        (show_error_inline == 'true') ? hide(`.${el_name}-inline-error`) : '';
+                     } else {
+                        el.classList.add('!border-red-400'); 
+                        (show_error_inline == 'true') ? unhide(`.${el_name}-inline-error`) : '';
+                     }
                 });
                 has_error++;
                 throw BreakException;
@@ -33,8 +47,9 @@ validateForm = (element) => {
     return has_error === 0;
 }
 
-isNumberKey = (evt) => {   // usage:  onkeypress="return isNumberKey(event)"
+isNumberKey = (evt, with_dots=1) => {   // usage:  onkeypress="return isNumberKey(event)"
     var charCode = (evt.which) ? evt.which : evt.keyCode
+    if (with_dots==0 && charCode == 46) return false;
     if (charCode > 31 && (charCode != 46 && (charCode < 48 || charCode > 57))) {
         return false;
     }
@@ -62,49 +77,6 @@ serialize = (form) => {
     }   return obj;
 }
 
-showMessage = (message, type, dismissable=true) => {
-    clearTimeout(notification_timeout);
-    let notification_bar = dom_el('.bw-notification');
-    let message_container = dom_el('.bw-notification .message-container');
-    message_container.classList.remove('bg-red-500', 'bg-green-500', 'bg-blue-600', 'bg-orange-400');
-    notification_bar.classList.remove('animate__animated', 'animate__slideOutUp');
-    dom_el('.bw-notification .message').innerHTML = message;
-
-    switch (type) {
-        case 'error': message_container.classList.add('bg-red-500'); break;
-        case 'info': message_container.classList.add('bg-blue-600'); break;
-        case 'warning': message_container.classList.add('bg-orange-400'); break;
-        default: message_container.classList.add('bg-green-500'); break;
-    }
-
-    notification_bar.classList.add('animate__animated', 'animate__slideInDown');
-    notification_bar.classList.remove('hidden');
-
-    if ( ! dismissable ){
-        dom_el('.notification .cursor-pointer').classList.add('hidden');
-    } else {    
-        var notification_timeout = setTimeout(() => {
-            notification_bar.classList.remove('animate__animated', 'animate__slideInDown');
-            notification_bar.classList.add('animate__animated', 'animate__slideOutUp');
-        }, 15000);
-        dom_el('.notification .cursor-pointer').classList.remove('hidden');
-        dom_el('.notification .cursor-pointer').addEventListener('click', function (e){
-            clearTimeout(notification_timeout);
-            notification_bar.classList.add('animate__animated', 'animate__slideOutUp');
-        });
-    }
-}
-
-displayFormErrors = (errors) => {
-    if( errors) {
-        let number_of_errors = Object.keys(errors).length;
-        if ( number_of_errors > 0 ) {
-            let message = errors[Object.keys(errors)[0]][0];
-            showMessage(message, 'error');
-        }
-    }
-}
-
 stringContains = (str, keyword) => { 
     if(typeof(str) !== 'string') return false; 
     return (str.indexOf(keyword) != -1); 
@@ -112,48 +84,48 @@ stringContains = (str, keyword) => {
 
 doNothing = () => { }
 
-changeCssForDomArray = (els, css, mode='add') => { 
-    if(dom_els(els).length > 0){
-        dom_els(els).forEach((el) => { 
+changeCssForDomArray = (elements, css, mode='add') => { 
+    if(dom_els(elements).length > 0){
+        dom_els(elements).forEach((el) => { 
             changeCss(el, css, mode, true);
         });
     }
 }
 
-changeCss = (el, css, mode='add', elIsDomObject=false) => { 
+changeCss = (element, css, mode='add', elementIsDomObject=false) => { 
     // css can be comma separated
-    // if elIsDomObject dont run it through dom_el
-    if( (! elIsDomObject && dom_el(el) != null) || (elIsDomObject && el != null)){
+    // if elementIsDomObject dont run it through dom_el
+    if( (! elementIsDomObject && dom_el(element) != null) || (elementIsDomObject && element != null)){
         if(css.indexOf(',') != -1 || css.indexOf(' ') != -1) {
             css = css.replace(/\s+/g, '').split(',');
             for(let classname of css) {
                 (mode == 'add') ?
-                    ((elIsDomObject) ? el.classList.add(classname.trim()) : dom_el(el).classList.add(classname.trim())) :
-                    ((elIsDomObject) ? el.classList.remove(classname.trim()) : dom_el(el).classList.remove(classname.trim()));
+                    ((elementIsDomObject) ? element.classList.add(classname.trim()) : dom_el(element).classList.add(classname.trim())) :
+                    ((elementIsDomObject) ? element.classList.remove(classname.trim()) : dom_el(element).classList.remove(classname.trim()));
             }
         } else {
-            if( (! elIsDomObject && dom_el(el).classList != undefined) || (elIsDomObject && el.classList != undefined)){
+            if( (! elementIsDomObject && dom_el(element).classList != undefined) || (elementIsDomObject && element.classList != undefined)){
                 (mode == 'add') ?
-                    ((elIsDomObject) ? el.classList.add(css) : dom_el(el).classList.add(css)) : 
-                    ((elIsDomObject) ? el.classList.remove(css) : dom_el(el).classList.remove(css));
+                    ((elementIsDomObject) ? element.classList.add(css) : dom_el(element).classList.add(css)) : 
+                    ((elementIsDomObject) ? element.classList.remove(css) : dom_el(element).classList.remove(css));
             }
         }
     }
 }
 
-showModal = (el) => { unhide(`.bw-${el}-modal`); }
+showModal = (element) => { unhide(`.bw-${element}-modal`); }
 
-hideModal = (el) => { hide(`.bw-${el}-modal`); }
+hideModal = (element) => { hide(`.bw-${element}-modal`); }
 
-hide = (el, elIsDomObject=false) => { 
-    if( (! elIsDomObject && dom_el(el) != null) || (elIsDomObject && el != null)){
-        changeCss(el, 'hidden', 'add', elIsDomObject); 
+hide = (element, elementIsDomObject=false) => { 
+    if( (! elementIsDomObject && dom_el(element) != null) || (elementIsDomObject && element != null)){
+        changeCss(element, 'hidden', 'add', elementIsDomObject); 
     }
 }
 
-unhide = (el, elIsDomObject=false) => { 
-    if( (! elIsDomObject && dom_el(el) != null) || (elIsDomObject && el != null)){ 
-        changeCss(el, 'hidden', 'remove', elIsDomObject); 
+unhide = (element, elementIsDomObject=false) => { 
+    if( (! elementIsDomObject && dom_el(element) != null) || (elementIsDomObject && element != null)){ 
+        changeCss(element, 'hidden', 'remove', elementIsDomObject); 
     }
 }
 
@@ -191,14 +163,6 @@ animateCSS = (element, animation) =>
         (storageType === 'localStorage') ? 
             localStorage.removeItem(key) : sessionStorage.removeItem(key);
       }
-  }
-
-  removeCommas = (amount) => {
-    return amount.toString().replace(/,/g, '');
-  }
-
-  toCurrency = (amount) => {
-    return ((parseFloat(amount).toFixed(2))*1).toLocaleString();
   }
 
   goToTab = (el, color) => {

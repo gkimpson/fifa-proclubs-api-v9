@@ -12,13 +12,13 @@
         'right_bottom' => 'right-4 bottom-10',
         'bottom_left' => 'left-4 bottom-10',
         'left_bottom' => 'right-4 bottom-10',
-        'top_center' => 'top-10', //FIXME::
+        'top_center' => 'top-10', //FIXME:: 
         'center_top' => 'top-10',
         'bottom_center' => 'bottom-10', //FIXME::
         'center_bottom' => 'bottom-10',
     ]
 ])
-<div class="fixed {{ $position_css[str_replace(' ', '_', $position)] }} z-50 hidden border-2 bw-notification bg-white shadow-lg p-4 rounded-lg w-[84%] sm:w-1/4">
+<div class="fixed {{ $position_css[str_replace(' ', '_', $position)] }} z-50 hidden border-2 bw-notification bg-white shadow-lg p-4 rounded-lg w-11/12 sm:w-1/4">
     <div class="flex">
         <div class="flex-none pr-4">
             <x-bladewind::modal-icon />
@@ -27,7 +27,7 @@
             <h1 class="font-semibold text-gray-700 title"></h1>
             <div class="pt-1 text-sm !text-gray-600 message"></div>
             <svg xmlns="http://www.w3.org/2000/svg" 
-                class="h-4 w-4 absolute right-0 cursor-pointer top-0 text-gray-400" 
+                class="h-5 w-5 absolute -right-1 cursor-pointer -top-1 text-gray-400 hover:bg-gray-200 p-1" 
                 fill="none" viewBox="0 0 24 24" stroke="currentColor" onclick="hideNotification()">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
             </svg>
